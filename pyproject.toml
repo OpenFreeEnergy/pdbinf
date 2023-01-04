@@ -1,0 +1,18 @@
+[build-system]
+requires=['setuptools>=61.0']
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alibaby"
+version = "0.0.1"
+authors=[
+    {name="Richard J Gowers", email="richardjgowers@gmail.com"},
+]
+description="not sure yet"
+readme="README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
