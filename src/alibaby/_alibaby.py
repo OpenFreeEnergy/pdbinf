@@ -1,3 +1,4 @@
+import itertools
 import gemmi
 from rdkit import Chem
 from rdkit.Chem import AllChem
@@ -12,7 +13,8 @@ STANDARD_RESNAMES = {
     'ALA', 'ARG', 'ASN', 'ASP', 'CYS', 'GLN', 'GLU', 'GLY', 'HIS', 'ILE',
     'LEU', 'LYS', 'MET', 'PHE', 'PRO', 'SER', 'THR', 'TRP', 'TYR', 'VAL'
 }
-
+MAX_AMIDE_LENGTH = 2.0
+MAX_DISULPHIDE_LENGTH = 2.5
 
 def strip_bonds(m: Chem.Mol) -> Chem.Mol:
     em = AllChem.EditableMol(m)
@@ -147,6 +149,8 @@ def get_atom_named(mol, i, j, name) -> int:
 
 
 def smallest_connection(mol, a, b, x, y, conf) -> tuple[int, int, float]:
+    # todo: might this return a SS bond instead of the backbond bond expected?
+    #       if so, return list of all possible bonds rather than single bond?
     mindist = float('inf')
     ret = -1, -1
 
@@ -192,10 +196,10 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
 
             d1 = conf.GetAtomPosition(C_A).Distance(conf.GetAtomPosition(N_B))
             d2 = conf.GetAtomPosition(N_A).Distance(conf.GetAtomPosition(C_B))
-            if d1 < 2.0:
+            if d1 < MAX_AMIDE_LENGTH:
                 logger.debug(f'C-N distance {d1}')
                 bonds.append((C_A, N_B))
-            elif d2 < 2.0:
+            elif d2 < MAX_AMIDE_LENGTH:
                 logger.debug(f'N-C distance {d2}')
                 bonds.append((N_A, C_B))
             else:
@@ -204,7 +208,7 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
             # find nonstandard residue bond
             i, j, d = smallest_connection(mol, i_A, j_A, i_B, j_B, conf)
             logger.debug(f'nonstandard bond {i}-{j} {d}')
-            if d < 2.0:
+            if d < MAX_AMIDE_LENGTH:
                 bonds.append((i, j))
 
         i_A, j_A, resname_A, chainid_A = i_B, j_B, resname_B, chainid_B
@@ -221,7 +225,22 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
 
 
 def assign_sulphur_bonds(mol) -> Chem.Mol:
-    return mol
+    sulphurs = [i for i in range(mol.GetNumAtoms())
+                if mol.GetAtomWithIdx(i).GetAtomicNum() == 16]
+
+    conf = mol.GetConformer()
+    bonds = []
+    for i, j in itertools.combinations(sulphurs, 2):
+        di = conf.GetAtomPosition(i)
+        if di.Distance(conf.GetAtomPosition(j)) < MAX_DISULPHIDE_LENGTH:
+            bonds.append((i, j))
+
+    em = AllChem.EditableMol(mol)
+
+    for i, j in bonds:
+        em.AddBond(i, j, order=Chem.BondType.SINGLE)
+
+    return em.GetMol()
 
 
 def valence(at: Chem.Atom) -> int:
