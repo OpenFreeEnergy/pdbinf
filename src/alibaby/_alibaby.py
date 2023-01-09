@@ -258,9 +258,9 @@ def assign_charge(mol: Chem.Mol) -> Chem.Mol:
         v = valence(atom)
         if atnum == 5:
             chg = 3 - v
-        elif atnum == 15 and valence == 5:
+        elif atnum == 15 and v == 5:
             chg = 0
-        elif atnum == 16 and valence == 6:
+        elif atnum == 16 and v == 6:
             chg = 0
         else:
             chg = PT.GetNOuterElecs(atnum) - 8 + v
