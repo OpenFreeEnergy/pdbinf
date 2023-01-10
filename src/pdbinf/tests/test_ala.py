@@ -1,7 +1,7 @@
 import gemmi
 from rdkit import Chem
 
-import alibaby
+import pdbinf
 
 ala_ala = """\
 REMARK   1 PDBFIXER FROM: NTerminal_ALA_ALA.pdb
@@ -51,10 +51,10 @@ def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
     templates = [
-        gemmi.cif.read('/home/richard/code/alibaby/data/ala.cif')
+        gemmi.cif.read('/home/richard/code/pdbinf/data/ala.cif')
     ]
 
-    m = alibaby.assign_pdb_bonds(m, templates=templates)
+    m = pdbinf.assign_pdb_bonds(m, templates=templates)
 
     assert m.GetNumAtoms() == 28
     assert m.GetNumBonds() == 27

@@ -1,6 +1,6 @@
 import logging
-from . import _alibaby
-from ._alibaby import (
+from . import _pdbinf
+from ._pdbinf import (
     assign_pdb_bonds,
     load_pdb_file,
 )

@@ -3,7 +3,7 @@ requires=['setuptools>=61.0']
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "alibaby"
+name = "pdbinf"
 version = "0.0.1"
 authors=[
     {name="Richard J Gowers", email="richardjgowers@gmail.com"},
