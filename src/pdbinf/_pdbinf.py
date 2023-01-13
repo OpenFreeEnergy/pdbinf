@@ -4,6 +4,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 import logging
 import pathlib
+import numpy as np
 from typing import Iterator
 
 logger = logging.getLogger(__name__)
@@ -59,7 +60,7 @@ def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, str, str]]:
     yield begin, m.GetNumAtoms(), current[0], current[2]
 
 
-def assign_intra_props(mol, atom_span: range, reference_block) -> Chem.Mol:
+def assign_intra_props(mol, atom_span: range, reference_block):
     """for atoms within span, assign bonds and aromaticity based on NAMES
 
     """
@@ -74,6 +75,10 @@ def assign_intra_props(mol, atom_span: range, reference_block) -> Chem.Mol:
 
     em = AllChem.EditableMol(mol)
 
+    # we'll assign rdkit SINGLE, DOUBLE or AROMATIC bonds
+    # but we'll also want to know the original *valence*
+    valence = np.zeros(mol.GetNumAtoms(), dtype=int)
+
     # grab bond data from gemmi Block
     for nm1, nm2, arom, order in reference_block.find(
             '_chem_comp_bond.',
@@ -84,9 +89,13 @@ def assign_intra_props(mol, atom_span: range, reference_block) -> Chem.Mol:
         except KeyError:
             continue
 
+        v = 1 if order == 'SING' else 2  # 'DOUB'
+        valence[idx1] += v
+        valence[idx2] += v
+
         if arom == 'Y':
             order = Chem.BondType.AROMATIC
-        elif order == 'SING':
+        elif v == 1:
             order = Chem.BondType.SINGLE
         else:  # order == 'DOUB'
             order = Chem.BondType.DOUBLE
@@ -108,7 +117,7 @@ def assign_intra_props(mol, atom_span: range, reference_block) -> Chem.Mol:
         atom = mol.GetAtomWithIdx(idx)
         atom.SetIsAromatic(arom == 'Y')
 
-    return mol
+    return mol, valence
 
 
 def load_pdb_file(pdb_path: str | pathlib.Path,
@@ -179,6 +188,8 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
 
     logger.debug('trying to add inter residue bonds')
 
+    valence = np.zeros(mol.GetNumAtoms(), dtype=int)
+
     res_gen = residue_spans(mol)
     i_A, j_A, resname_A, chainid_A = next(res_gen)
     for i_B, j_B, resname_B, chainid_B in res_gen:
@@ -220,9 +231,11 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
     for i, j in bonds:
         logger.debug(f'adding inter bond {i} {j}')
 
+        valence[i] += 1
+        valence[j] += 1
         em.AddBond(i, j, order=Chem.BondType.SINGLE)
 
-    return em.GetMol()
+    return em.GetMol(), valence
 
 
 def assign_sulphur_bonds(mol) -> Chem.Mol:
@@ -244,19 +257,13 @@ def assign_sulphur_bonds(mol) -> Chem.Mol:
     return em.GetMol()
 
 
-def valence(at: Chem.Atom) -> int:
-    # GetTotalValence will poop the bed here
-    # but updating the property cache will also not work
-    return int(sum(b.GetBondTypeAsDouble() for b in at.GetBonds()))
-
-
-def assign_charge(mol: Chem.Mol) -> Chem.Mol:
+def assign_charge(mol: Chem.Mol, valence) -> Chem.Mol:
     # hacked adaptation of rdkit's xyz2mol
-    for atom in mol.GetAtoms():
+    for atom, v in zip(mol.GetAtoms(), valence):
         atnum = atom.GetAtomicNum()
         if atnum == 1:
             continue
-        v = valence(atom)
+
         if atnum == 5:
             chg = 3 - v
         elif atnum == 15 and v == 5:
@@ -266,7 +273,7 @@ def assign_charge(mol: Chem.Mol) -> Chem.Mol:
         else:
             chg = PT.GetNOuterElecs(atnum) - 8 + v
 
-        atom.SetFormalCharge(chg)
+        atom.SetFormalCharge(int(chg))  # rdkit hates np.int64
 
     return mol
 
@@ -290,20 +297,23 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
     mol = strip_bonds(mol)
 
     # 1) assign properties inside each Residue
+    valence = np.zeros(mol.GetNumAtoms(), dtype=int)
     for i, j, resname, _ in residue_spans(mol):
         for t in templates:
             # check if resname in template doc
             if not doc_contains(t, resname):
                 continue
-            mol = assign_intra_props(mol, range(i, j), t[resname])
+            mol, v = assign_intra_props(mol, range(i, j), t[resname])
+            valence += v
 
     # 2) assign bonds between residues
-    mol = assign_inter_residue_bonds(mol)
+    mol, v = assign_inter_residue_bonds(mol)
+    valence += v
 
     # 3) sulphur bridges
     mol = assign_sulphur_bonds(mol)
 
     # 4) ch ch ch ch charges
-    mol = assign_charge(mol)
+    mol = assign_charge(mol, valence)
 
     return mol
