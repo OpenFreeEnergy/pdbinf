@@ -16,6 +16,7 @@ STANDARD_RESNAMES = {
 MAX_AMIDE_LENGTH = 2.0
 MAX_DISULPHIDE_LENGTH = 2.5
 
+
 def strip_bonds(m: Chem.Mol) -> Chem.Mol:
     em = AllChem.EditableMol(m)
 

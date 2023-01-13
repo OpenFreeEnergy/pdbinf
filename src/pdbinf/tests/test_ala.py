@@ -50,11 +50,7 @@ END
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
-    templates = [
-        gemmi.cif.read('/home/richard/code/pdbinf/data/ala.cif')
-    ]
-
-    m = pdbinf.assign_pdb_bonds(m, templates=templates)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
 
     assert m.GetNumAtoms() == 28
     assert m.GetNumBonds() == 27
