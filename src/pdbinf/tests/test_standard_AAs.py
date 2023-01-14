@@ -184,3 +184,14 @@ def test_arg():
     assert atom.GetFormalCharge() == 1
     assert any(b.GetBondType() == Chem.BondType.DOUBLE
                for b in atom.GetBonds())
+
+
+def test_trp():
+    m = Chem.MolFromPDBBlock(trp, proximityBonding=False, removeHs=False)
+
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 36
+    assert m.GetNumBonds() == 37
+    for at in m.GetAtoms():
+        assert at.GetFormalCharge() == 0
