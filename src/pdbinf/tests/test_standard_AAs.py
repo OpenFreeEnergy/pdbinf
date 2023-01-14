@@ -36,13 +36,6 @@ HETATM   26  H1  NME     3      33.505  31.332  25.048  1.00  0.00           H
 HETATM   27  H2  NME     3      35.114  30.659  24.701  1.00  0.00           H  
 HETATM   28  H3  NME     3      34.088  31.254  23.376  1.00  0.00           H  
 TER      29      NME     3
-CONECT   21   23
-CONECT   23   21   25   24
-CONECT   24   23
-CONECT   25   26   27   28   23
-CONECT   26   25
-CONECT   27   25
-CONECT   28   25
 END
 """
 
@@ -87,23 +80,10 @@ HETATM   33  C   NME     3      29.101  32.453  24.889  1.00  0.00           C
 HETATM   34  H1  NME     3      28.055  32.699  25.084  1.00  0.00           H                                                              
 HETATM   35  H2  NME     3      29.712  32.817  25.716  1.00  0.00           H                                                              
 HETATM   36  H3  NME     3      29.407  32.954  23.968  1.00  0.00           H                                                              
-TER      37      NME     3                                                                                                                  
-CONECT    1    2                                                                                                                            
-CONECT    2    5    1    3    4                                                                                                             
-CONECT    3    2                                                                                                                            
-CONECT    4    2                                                                                                                            
-CONECT    5    2    6    7                                                                                                                  
-CONECT    6    5                                                                                                                            
-CONECT    7    5                                                                                                                            
-CONECT   29   31                                                                                                                            
-CONECT   31   29   33   32                                                                                                                  
-CONECT   32   31                                                                                                                            
-CONECT   33   34   35   36   31                                                                                                             
-CONECT   34   33                                                                                                                            
-CONECT   35   33                                                                                                                            
-CONECT   36   33                                                                                                                            
+TER      37      NME     3                                                                                                                                                                                                                                            
 END 
 """
+
 
 trp = """\
 REMARK   1 PDBFIXER FROM: MainChain_TRP.pdb                                                                                                 
@@ -145,23 +125,46 @@ HETATM   33  C   NME     3      28.956  32.603  23.187  1.00  0.00           C
 HETATM   34  H1  NME     3      27.915  32.898  23.332  1.00  0.00           H                                                              
 HETATM   35  H2  NME     3      29.602  33.258  23.773  1.00  0.00           H                                                              
 HETATM   36  H3  NME     3      29.204  32.703  22.129  1.00  0.00           H                                                              
-TER      37      NME     3                                                                                                                  
-CONECT    1    2                                                                                                                            
-CONECT    2    5    1    3    4                                                                                                             
-CONECT    3    2                                                                                                                            
-CONECT    4    2                                                                                                                            
-CONECT    5    2    6    7                                                                                                                  
-CONECT    6    5                                                                                                                            
-CONECT    7    5                                                                                                                            
-CONECT   29   31                                                                                                                            
-CONECT   31   29   33   32                                                                                                                  
-CONECT   32   31                                                                                                                            
-CONECT   33   34   35   36   31                                                                                                             
-CONECT   34   33                                                                                                                            
-CONECT   35   33                                                                                                                            
-CONECT   36   33                                                                                                                            
+TER      37      NME     3                                                                                                                                                                                                                                             
 END                                                                                                                                         
 """
+
+
+pro = """\
+       REMARK   1 PDBFIXER FROM: MainChain_PRO.pdb                                                                                                 
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-14                                                                                              
+CRYST1   48.000   48.000   48.000  90.00  90.00  90.00 P 1           1                                                                      
+HETATM    1  H1  ACE     1      26.508  24.897  24.198  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      26.278  25.954  24.075  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1      25.662  26.287  24.908  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      25.754  26.105  23.134  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1      27.577  26.740  24.064  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      28.637  26.123  24.044  1.00  0.00           O                                                              
+ATOM      7  N   PRO     2      27.528  28.085  24.064  1.00  0.00           N                                                              
+ATOM      8  CD  PRO     2      26.342  28.911  23.908  1.00  0.00           C                                                              
+ATOM      9  HD2 PRO     2      25.907  29.109  24.889  1.00  0.00           H                                                              
+ATOM     10  HD3 PRO     2      25.604  28.452  23.251  1.00  0.00           H                                                              
+ATOM     11  CG  PRO     2      26.851  30.212  23.291  1.00  0.00           C                                                              
+ATOM     12  HG2 PRO     2      26.195  31.053  23.521  1.00  0.00           H                                                              
+ATOM     13  HG3 PRO     2      26.960  30.089  22.213  1.00  0.00           H                                                              
+ATOM     14  CB  PRO     2      28.228  30.369  23.936  1.00  0.00           C                                                              
+ATOM     15  HB2 PRO     2      28.110  30.844  24.912  1.00  0.00           H                                                              
+ATOM     16  HB3 PRO     2      28.899  30.957  23.310  1.00  0.00           H                                                              
+ATOM     17  CA  PRO     2      28.725  28.923  24.097  1.00  0.00           C                                                              
+ATOM     18  HA  PRO     2      29.348  28.666  23.240  1.00  0.00           H                                                              
+ATOM     19  C   PRO     2      29.531  28.734  25.393  1.00  0.00           C                                                              
+ATOM     20  O   PRO     2      29.011  28.944  26.487  1.00  0.00           O                                                              
+HETATM   21  N   NME     3      30.814  28.375  25.264  1.00  0.00           N                                                              
+HETATM   22  H   NME     3      31.150  28.164  24.338  1.00  0.00           H                                                              
+HETATM   23  C   NME     3      31.719  28.162  26.391  1.00  0.00           C                                                              
+HETATM   24  H1  NME     3      31.372  27.311  26.981  1.00  0.00           H                                                              
+HETATM   25  H2  NME     3      32.730  27.965  26.033  1.00  0.00           H                                                              
+HETATM   26  H3  NME     3      31.727  29.047  27.031  1.00  0.00           H                                                              
+TER      27      NME     3                                                                                                                                                                                                                                           
+END                                                                                                                                                                                                                                                         
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -193,5 +196,16 @@ def test_trp():
 
     assert m.GetNumAtoms() == 36
     assert m.GetNumBonds() == 37
+    for at in m.GetAtoms():
+        assert at.GetFormalCharge() == 0
+
+
+def test_pro():
+    m = Chem.MolFromPDBBlock(pro, proximityBonding=False, removeHs=False)
+
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 26
+    assert m.GetNumBonds() == 26
     for at in m.GetAtoms():
         assert at.GetFormalCharge() == 0
