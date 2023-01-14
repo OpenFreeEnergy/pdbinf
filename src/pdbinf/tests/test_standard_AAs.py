@@ -197,6 +197,60 @@ END
 """
 
 
+cyx = """\
+REMARK   1 PDBFIXER FROM: MainChain_CYX.pdb                                                                                                 
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-14                                                                                              
+CRYST1   48.000   48.000   48.000  90.00  90.00  90.00 P 1           1                                                                      
+HETATM    1  H1  ACE     1      28.573  24.032  26.099  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      28.403  25.075  26.364  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1      29.047  25.351  27.196  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      27.360  25.215  26.643  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1      28.726  25.945  25.173  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      29.129  25.442  24.132  1.00  0.00           O                                                              
+ATOM      7  N   CYS     2      28.533  27.252  25.319  1.00  0.00           N                                                              
+ATOM      8  H   CYS     2      28.195  27.601  26.205  1.00  0.00           H                                                              
+ATOM      9  CA  CYS     2      28.788  28.255  24.284  1.00  0.00           C                                                              
+ATOM     10  HA  CYS     2      29.726  28.000  23.788  1.00  0.00           H                                                              
+ATOM     11  CB  CYS     2      27.665  28.212  23.233  1.00  0.00           C                                                              
+ATOM     12  HB2 CYS     2      27.542  27.183  22.893  1.00  0.00           H                                                              
+ATOM     13  HB3 CYS     2      27.997  28.784  22.367  1.00  0.00           H                                                              
+ATOM     14  SG  CYS     2      26.035  28.864  23.703  1.00  0.00           S                                                              
+ATOM     15  C   CYS     2      28.948  29.658  24.899  1.00  0.00           C                                                              
+ATOM     16  O   CYS     2      28.616  29.871  26.065  1.00  0.00           O                                                              
+HETATM   17  N   NME     3      29.464  30.614  24.115  1.00  0.00           N                                                              
+HETATM   18  H   NME     3      29.717  30.370  23.171  1.00  0.00           H                                                              
+HETATM   19  C   NME     3      29.676  31.993  24.550  1.00  0.00           C                                                              
+HETATM   20  H1  NME     3      28.717  32.449  24.805  1.00  0.00           H                                                              
+HETATM   21  H2  NME     3      30.312  32.007  25.437  1.00  0.00           H                                                              
+HETATM   22  H3  NME     3      30.151  32.572  23.757  1.00  0.00           H                                                              
+TER      23      NME     3                                                                                                                  
+HETATM   24  H1  ACE     4      23.123  21.295  23.934  1.00  0.00           H                                                              
+HETATM   25  CH3 ACE     4      23.375  22.084  23.227  1.00  0.00           C                                                              
+HETATM   26  H2  ACE     4      22.641  22.105  22.423  1.00  0.00           H                                                              
+HETATM   27  H3  ACE     4      24.367  21.904  22.817  1.00  0.00           H                                                              
+HETATM   28  C   ACE     4      23.365  23.411  23.949  1.00  0.00           C                                                              
+HETATM   29  O   ACE     4      23.112  23.462  25.145  1.00  0.00           O                                                              
+ATOM     30  N   CYS     5      23.650  24.486  23.219  1.00  0.00           N                                                              
+ATOM     31  H   CYS     5      23.839  24.370  22.234  1.00  0.00           H                                                              
+ATOM     32  CA  CYS     5      23.696  25.853  23.738  1.00  0.00           C                                                              
+ATOM     33  HA  CYS     5      22.909  25.977  24.484  1.00  0.00           H                                                              
+ATOM     34  CB  CYS     5      25.052  26.054  24.429  1.00  0.00           C                                                              
+ATOM     35  HB2 CYS     5      25.136  25.300  25.213  1.00  0.00           H                                                              
+ATOM     36  HB3 CYS     5      25.847  25.859  23.709  1.00  0.00           H                                                              
+ATOM     37  SG  CYS     5      25.362  27.661  25.209  1.00  0.00           S                                                              
+ATOM     38  C   CYS     5      23.449  26.867  22.607  1.00  0.00           C                                                              
+ATOM     39  O   CYS     5      23.798  26.601  21.456  1.00  0.00           O                                                              
+HETATM   40  N   NME     6      22.844  28.017  22.931  1.00  0.00           N                                                              
+HETATM   41  H   NME     6      22.620  28.173  23.901  1.00  0.00           H                                                              
+HETATM   42  C   NME     6      22.545  29.086  21.979  1.00  0.00           C                                                              
+HETATM   43  H1  NME     6      23.464  29.613  21.717  1.00  0.00           H                                                              
+HETATM   44  H2  NME     6      22.113  28.665  21.068  1.00  0.00           H                                                              
+HETATM   45  H3  NME     6      21.838  29.792  22.415  1.00  0.00           H                                                              
+TER      46      NME     6  
+END
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -252,3 +306,15 @@ def test_cys():
     assert m.GetNumBonds() == 22
     for at in m.GetAtoms():
         assert at.GetFormalCharge() == 0
+
+
+def test_cyx():
+    # has sulphur-sulphur bond
+    m = Chem.MolFromPDBBlock(cyx, proximityBonding=False, removeHs=False)
+
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 44
+    assert m.GetNumBonds() == 43
+    # S-S bond, will return None if this bond does not exist
+    assert m.GetBondBetweenAtoms(13, 35) is not None
