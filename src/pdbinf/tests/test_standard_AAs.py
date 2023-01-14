@@ -165,6 +165,38 @@ END
 """
 
 
+cys = """\
+REMARK   1 PDBFIXER FROM: MainChain_CYS.pdb                                                                                                 
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-14                                                                                              
+CRYST1   48.000   48.000   48.000  90.00  90.00  90.00 P 1           1                                                                      
+HETATM    1  H1  ACE     1      25.973  25.174  24.544  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      25.997  26.195  24.165  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1      25.393  26.837  24.805  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      25.611  26.217  23.148  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1      27.425  26.686  24.169  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      28.326  25.956  24.559  1.00  0.00           O                                                              
+ATOM      7  N   CYS     2      27.631  27.926  23.732  1.00  0.00           N                                                              
+ATOM      8  H   CYS     2      26.835  28.482  23.454  1.00  0.00           H                                                              
+ATOM      9  CA  CYS     2      28.930  28.601  23.716  1.00  0.00           C                                                              
+ATOM     10  HA  CYS     2      29.492  28.302  24.603  1.00  0.00           H                                                              
+ATOM     11  CB  CYS     2      29.705  28.139  22.471  1.00  0.00           C                                                              
+ATOM     12  HB2 CYS     2      29.719  27.047  22.449  1.00  0.00           H                                                              
+ATOM     13  HB3 CYS     2      29.201  28.502  21.573  1.00  0.00           H                                                              
+ATOM     14  SG  CYS     2      31.419  28.741  22.503  1.00  0.00           S                                                              
+ATOM     15  HG  CYS     2      31.840  28.100  21.406  1.00  0.00           H                                                              
+ATOM     16  C   CYS     2      28.734  30.130  23.768  1.00  0.00           C                                                              
+ATOM     17  O   CYS     2      27.658  30.623  23.428  1.00  0.00           O                                                              
+HETATM   18  N   NME     3      29.759  30.876  24.196  1.00  0.00           N                                                              
+HETATM   19  H   NME     3      30.627  30.400  24.395  1.00  0.00           H                                                              
+HETATM   20  C   NME     3      29.728  32.333  24.310  1.00  0.00           C                                                              
+HETATM   21  H1  NME     3      28.835  32.642  24.858  1.00  0.00           H                                                              
+HETATM   22  H2  NME     3      30.614  32.689  24.837  1.00  0.00           H                                                              
+HETATM   23  H3  NME     3      29.697  32.778  23.314  1.00  0.00           H                                                              
+TER      24      NME     3                                                                                                                                                                                                                                        
+END                
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -207,5 +239,16 @@ def test_pro():
 
     assert m.GetNumAtoms() == 26
     assert m.GetNumBonds() == 26
+    for at in m.GetAtoms():
+        assert at.GetFormalCharge() == 0
+
+
+def test_cys():
+    m = Chem.MolFromPDBBlock(cys, proximityBonding=False, removeHs=False)
+
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 23
+    assert m.GetNumBonds() == 22
     for at in m.GetAtoms():
         assert at.GetFormalCharge() == 0
