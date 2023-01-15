@@ -251,6 +251,62 @@ END
 """
 
 
+lys = """\
+REMARK   1 PDBFIXER FROM: lys.pdb                                                                                                           
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-15                                                                                              
+HETATM    1  H1  ACE     1       3.851  -3.562   0.131  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1       3.389  -3.037  -0.713  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1       3.132  -3.704  -1.541  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1       4.006  -2.170  -1.057  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1       2.115  -2.449  -0.125  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1       1.100  -3.195  -0.165  1.00  0.00           O                                                              
+ATOM      7  N   LYS     2       2.145  -1.000   0.467  1.00  0.00           N                                                              
+ATOM      8  CA  LYS     2       0.684  -0.172   0.107  1.00  0.00           C                                                              
+ATOM      9  C   LYS     2       1.161   1.161  -0.224  1.00  0.00           C                                                              
+ATOM     10  O   LYS     2       0.958   1.659  -1.347  1.00  0.00           O                                                              
+ATOM     11  CB  LYS     2      -0.253  -0.408   1.195  1.00  0.00           C                                                              
+ATOM     12  CG  LYS     2      -1.599   0.233   1.121  1.00  0.00           C                                                              
+ATOM     13  CD  LYS     2      -2.466  -0.159  -0.054  1.00  0.00           C                                                              
+ATOM     14  CE  LYS     2      -3.754   0.617   0.150  1.00  0.00           C                                                              
+ATOM     15  NZ  LYS     2      -4.785   0.362  -0.787  1.00  0.00           N                                                              
+ATOM     16  H   LYS     2       2.562  -0.670   1.540  1.00  0.00           H                                                              
+ATOM     17  HA  LYS     2       0.300  -0.689  -0.853  1.00  0.00           H                                                              
+ATOM     18  HB2 LYS     2      -0.509  -1.551   1.129  1.00  0.00           H                                                              
+ATOM     19  HB3 LYS     2       0.163  -0.267   2.211  1.00  0.00           H                                                              
+ATOM     20  HG2 LYS     2      -1.613   1.336   1.159  1.00  0.00           H                                                              
+ATOM     21  HG3 LYS     2      -2.164  -0.139   2.024  1.00  0.00           H                                                              
+ATOM     22  HD2 LYS     2      -1.955   0.239  -0.949  1.00  0.00           H                                                              
+ATOM     23  HD3 LYS     2      -2.615  -1.226  -0.207  1.00  0.00           H                                                              
+ATOM     24  HE2 LYS     2      -4.119   0.453   1.180  1.00  0.00           H                                                              
+ATOM     25  HE3 LYS     2      -3.466   1.712   0.126  1.00  0.00           H                                                              
+ATOM     26  HZ1 LYS     2      -4.575   0.480  -1.785  1.00  0.00           H                                                              
+ATOM     27  HZ2 LYS     2      -5.564   1.061  -0.557  1.00  0.00           H                                                              
+ATOM     28  HZ3 LYS     2      -5.249  -0.563  -0.540  1.00  0.00           H                                                              
+HETATM   29  N   NME     3       2.024   2.091   0.877  1.00  0.00           N                                                              
+HETATM   30  H   NME     3       1.295   3.264   1.380  1.00  0.00           H                                                              
+HETATM   31  C   NME     3       3.556   2.525   0.096  1.00  0.00           C                                                              
+HETATM   32  H1  NME     3       4.519   3.117   1.252  1.00  0.00           H                                                              
+HETATM   33  H2  NME     3       4.264   1.218  -0.292  1.00  0.00           H                                                              
+HETATM   34  H3  NME     3       3.463   3.431  -1.036  1.00  0.00           H                                                              
+TER      35      NME     3                                                                                                                  
+CONECT    1    2                                                                                                                            
+CONECT    2    5    1    3    4                                                                                                             
+CONECT    3    2                                                                                                                            
+CONECT    4    2                                                                                                                            
+CONECT    5    2    6    7                                                                                                                  
+CONECT    6    5                                                                                                                            
+CONECT    7    5                                                                                                                            
+CONECT    9   29                                                                                                                            
+CONECT   29    9   31   30                                                                                                                  
+CONECT   30   29                                                                                                                            
+CONECT   31   32   33   34   29                                                                                                             
+CONECT   32   31                                                                                                                            
+CONECT   33   31                                                                                                                            
+CONECT   34   31                                                                                                                            
+END                                                                                                                                         
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -318,3 +374,13 @@ def test_cyx():
     assert m.GetNumBonds() == 43
     # S-S bond, will return None if this bond does not exist
     assert m.GetBondBetweenAtoms(13, 35) is not None
+
+
+def test_lys():
+    m = Chem.MolFromPDBBlock(lys, proximityBonding=False, removeHs=False)
+
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 34
+    assert m.GetNumBonds() == 33
+    assert m.GetAtomWithIdx(14).GetFormalCharge() == 1
