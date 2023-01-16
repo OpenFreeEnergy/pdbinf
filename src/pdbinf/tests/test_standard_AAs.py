@@ -340,6 +340,40 @@ END
 """
 
 
+asn = """\
+REMARK   1 PDBFIXER FROM: asn.pdb                                                                                                           
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16                                                                                              
+HETATM    1  H1  ACE     1      -1.652   3.100  -0.767  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      -0.654   2.957  -0.309  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1      -0.004   2.466  -1.071  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      -0.214   3.950  -0.113  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1      -0.760   2.150   0.929  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      -0.348   2.660   2.003  1.00  0.00           O                                                              
+ATOM      7  N   ASN     2      -1.376   0.672   0.925  1.00  0.00           N                                                              
+ATOM      8  CA  ASN     2      -0.280  -0.443   0.644  1.00  0.00           C                                                              
+ATOM      9  C   ASN     2       1.109   0.016   0.637  1.00  0.00           C                                                              
+ATOM     10  O   ASN     2       1.509   1.154   0.829  1.00  0.00           O                                                              
+ATOM     11  CB  ASN     2      -0.628  -1.189  -0.626  1.00  0.00           C                                                              
+ATOM     12  CG  ASN     2      -1.940  -1.829  -0.496  1.00  0.00           C                                                              
+ATOM     13  OD1 ASN     2      -2.368  -2.527  -1.449  1.00  0.00           O                                                              
+ATOM     14  ND2 ASN     2      -2.703  -1.659   0.683  1.00  0.00           N                                                              
+ATOM     15  H   ASN     2      -2.430   0.629   0.107  1.00  0.00           H                                                              
+ATOM     16  HA  ASN     2      -0.337  -1.226   1.463  1.00  0.00           H                                                              
+ATOM     17  HB2 ASN     2       0.151  -1.991  -0.782  1.00  0.00           H                                                              
+ATOM     18  HB3 ASN     2      -0.547  -0.528  -1.513  1.00  0.00           H                                                              
+ATOM     19 HD21 ASN     2      -3.742  -1.817   0.645  1.00  0.00           H                                                              
+ATOM     20 HD22 ASN     2      -2.335  -1.388   1.607  1.00  0.00           H                                                              
+HETATM   21  N   NME     3       2.364  -1.160   0.325  1.00  0.00           N                                                              
+HETATM   22  H   NME     3       2.025  -2.485   0.427  1.00  0.00           H                                                              
+HETATM   23  C   NME     3       3.706  -0.599  -0.492  1.00  0.00           C                                                              
+HETATM   24  H1  NME     3       2.723   0.001  -2.114  1.00  0.00           H                                                              
+HETATM   25  H2  NME     3       4.283   0.679  -0.256  1.00  0.00           H                                                              
+HETATM   26  H3  NME     3       4.450  -1.594  -1.237  1.00  0.00           H                                                              
+TER      27      NME     3                                                                                                                                                                                                                                             
+END      
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -426,3 +460,10 @@ def test_asp():
     assert m.GetNumAtoms() == 25
     assert m.GetNumBonds() == 24
 
+
+def test_asn():
+    m = Chem.MolFromPDBBlock(asn, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 26
+    assert m.GetNumBonds() == 25
