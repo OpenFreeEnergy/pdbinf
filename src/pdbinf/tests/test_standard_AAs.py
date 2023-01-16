@@ -447,6 +447,33 @@ END
 """
 
 
+gly = """\
+REMARK   1 PDBFIXER FROM: gly.pdb
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16
+HETATM    1  H1  ACE     1       2.971   1.581   0.462  1.00  0.00           H  
+HETATM    2  CH3 ACE     1       3.062   0.464   0.495  1.00  0.00           C  
+HETATM    3  H2  ACE     1       4.087   0.151   0.777  1.00  0.00           H  
+HETATM    4  H3  ACE     1       2.338   0.107   1.252  1.00  0.00           H  
+HETATM    5  C   ACE     1       2.759  -0.044  -0.861  1.00  0.00           C  
+HETATM    6  O   ACE     1       3.606   0.138  -1.763  1.00  0.00           O  
+ATOM      7  N   GLY     2       1.381  -0.817  -1.199  1.00  0.00           N  
+ATOM      8  CA  GLY     2       0.352  -0.517   0.111  1.00  0.00           C  
+ATOM      9  C   GLY     2      -1.002  -0.781  -0.355  1.00  0.00           C  
+ATOM     10  O   GLY     2      -1.229  -1.154  -1.523  1.00  0.00           O  
+ATOM     11  H   GLY     2       0.690   0.274  -2.113  1.00  0.00           H  
+ATOM     12  HA2 GLY     2       0.605  -1.231   0.913  1.00  0.00           H  
+ATOM     13  HA3 GLY     2       0.506   0.529   0.454  1.00  0.00           H  
+HETATM   14  N   NME     3      -2.338  -0.596   0.668  1.00  0.00           N  
+HETATM   15  H   NME     3      -3.005  -2.097   0.686  1.00  0.00           H  
+HETATM   16  C   NME     3      -3.556   0.411   0.255  1.00  0.00           C  
+HETATM   17  H1  NME     3      -4.888   0.334   0.511  1.00  0.00           H  
+HETATM   18  H2  NME     3      -3.117   1.609  -0.648  1.00  0.00           H  
+HETATM   19  H3  NME     3      -3.224   1.639   1.880  1.00  0.00           H  
+TER      20      NME     3
+END
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -556,3 +583,11 @@ def test_gln():
 
     assert m.GetNumAtoms() == 29
     assert m.GetNumBonds() == 28
+
+
+def test_gly():
+    m = Chem.MolFromPDBBlock(gly, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 19
+    assert m.GetNumBonds() == 18
