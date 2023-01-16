@@ -474,6 +474,45 @@ END
 """
 
 
+ile = """\
+REMARK   1 PDBFIXER FROM: ile.pdb
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16
+HETATM    1  H1  ACE     1      -4.349  -1.055   0.401  1.00  0.00           H  
+HETATM    2  CH3 ACE     1      -3.682  -1.952   0.500  1.00  0.00           C  
+HETATM    3  H2  ACE     1      -3.685  -2.590  -0.394  1.00  0.00           H  
+HETATM    4  H3  ACE     1      -4.074  -2.492   1.405  1.00  0.00           H  
+HETATM    5  C   ACE     1      -2.270  -1.564   0.757  1.00  0.00           C  
+HETATM    6  O   ACE     1      -1.554  -2.348   1.446  1.00  0.00           O  
+ATOM      7  N   ILE     2      -1.665  -0.206   0.189  1.00  0.00           N  
+ATOM      8  CA  ILE     2      -0.087  -0.319  -0.106  1.00  0.00           C  
+ATOM      9  C   ILE     2       0.767  -0.479   1.096  1.00  0.00           C  
+ATOM     10  O   ILE     2       0.160  -0.500   2.219  1.00  0.00           O  
+ATOM     11  CB  ILE     2       0.333   0.797  -1.016  1.00  0.00           C  
+ATOM     12  CG1 ILE     2       0.082   2.174  -0.482  1.00  0.00           C  
+ATOM     13  CG2 ILE     2      -0.454   0.676  -2.321  1.00  0.00           C  
+ATOM     14  CD1 ILE     2       0.783   2.487   0.797  1.00  0.00           C  
+ATOM     15  H   ILE     2      -1.505   0.496   1.685  1.00  0.00           H  
+ATOM     16  HA  ILE     2       0.069  -1.289  -0.680  1.00  0.00           H  
+ATOM     17  HB  ILE     2       1.434   0.727  -1.264  1.00  0.00           H  
+ATOM     18 HG12 ILE     2      -1.012   2.312  -0.341  1.00  0.00           H  
+ATOM     19 HG13 ILE     2       0.365   2.970  -1.219  1.00  0.00           H  
+ATOM     20 HG21 ILE     2       0.111   1.192  -3.129  1.00  0.00           H  
+ATOM     21 HG22 ILE     2      -0.650  -0.379  -2.576  1.00  0.00           H  
+ATOM     22 HG23 ILE     2      -1.443   1.165  -2.203  1.00  0.00           H  
+ATOM     23 HD11 ILE     2       1.809   2.087   0.855  1.00  0.00           H  
+ATOM     24 HD12 ILE     2       0.904   3.602   0.919  1.00  0.00           H  
+ATOM     25 HD13 ILE     2       0.203   2.184   1.711  1.00  0.00           H  
+HETATM   26  N   NME     3       2.391  -0.622   1.012  1.00  0.00           N  
+HETATM   27  H   NME     3       3.135   0.071   2.049  1.00  0.00           H  
+HETATM   28  C   NME     3       3.157  -1.744   0.173  1.00  0.00           C  
+HETATM   29  H1  NME     3       4.449  -2.265   0.542  1.00  0.00           H  
+HETATM   30  H2  NME     3       3.895  -0.581  -1.231  1.00  0.00           H  
+HETATM   31  H3  NME     3       2.385  -2.556  -0.795  1.00  0.00           H  
+TER      32      NME     3
+END
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -591,3 +630,11 @@ def test_gly():
 
     assert m.GetNumAtoms() == 19
     assert m.GetNumBonds() == 18
+
+
+def test_ile():
+    m = Chem.MolFromPDBBlock(ile, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 31
+    assert m.GetNumBonds() == 30
