@@ -1023,6 +1023,129 @@ CG2 HG22 SING N N
 CG2 HG23 SING N N
 OXT HXT  SING N N
 ##
+data_TYR
+#
+_chem_comp.id TYR
+#
+loop_
+_chem_comp_atom.atom_id
+_chem_comp_atom.alt_atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.pdbx_aromatic_flag
+_chem_comp_atom.pdbx_leaving_atom_flag
+_chem_comp_atom.pdbx_stereo_config
+N   N   N N N N
+CA  CA  C N N S
+C   C   C N N N
+O   O   O N N N
+CB  CB  C N N N
+CG  CG  C Y N N
+CD1 CD1 C Y N N
+CD2 CD2 C Y N N
+CE1 CE1 C Y N N
+CE2 CE2 C Y N N
+CZ  CZ  C Y N N
+OH  OH  O N N N
+OXT OXT O N Y N
+H   H   H N N N
+H2  HN2 H N Y N
+HA  HA  H N N N
+HB2 1HB H N N N
+HB3 2HB H N N N
+HD1 HD1 H N N N
+HD2 HD2 H N N N
+HE1 HE1 H N N N
+HE2 HE2 H N N N
+HH  HH  H N N N
+HXT HXT H N Y N
+#
+loop_
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.pdbx_aromatic_flag
+_chem_comp_bond.pdbx_stereo_config
+N   CA  SING N N
+N   H   SING N N
+N   H2  SING N N
+CA  C   SING N N
+CA  CB  SING N N
+CA  HA  SING N N
+C   O   DOUB N N
+C   OXT SING N N
+CB  CG  SING N N
+CB  HB2 SING N N
+CB  HB3 SING N N
+CG  CD1 DOUB Y N
+CG  CD2 SING Y N
+CD1 CE1 SING Y N
+CD1 HD1 SING N N
+CD2 CE2 DOUB Y N
+CD2 HD2 SING N N
+CE1 CZ  DOUB Y N
+CE1 HE1 SING N N
+CE2 CZ  SING Y N
+CE2 HE2 SING N N
+CZ  OH  SING N N
+OH  HH  SING N N
+OXT HXT SING N N
+##
+data_VAL
+#
+_chem_comp.id VAL
+#
+loop_
+_chem_comp_atom.atom_id
+_chem_comp_atom.alt_atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.pdbx_aromatic_flag
+_chem_comp_atom.pdbx_leaving_atom_flag
+_chem_comp_atom.pdbx_stereo_config
+N    N    N N N N
+CA   CA   C N N S
+C    C    C N N N
+O    O    O N N N
+CB   CB   C N N N
+CG1  CG1  C N N N
+CG2  CG2  C N N N
+OXT  OXT  O N Y N
+H    H    H N N N
+H2   HN2  H N Y N
+HA   HA   H N N N
+HB   HB   H N N N
+HG11 1HG1 H N N N
+HG12 2HG1 H N N N
+HG13 3HG1 H N N N
+HG21 1HG2 H N N N
+HG22 2HG2 H N N N
+HG23 3HG2 H N N N
+HXT  HXT  H N Y N
+#
+loop_
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.pdbx_aromatic_flag
+_chem_comp_bond.pdbx_stereo_config
+N   CA   SING N N
+N   H    SING N N
+N   H2   SING N N
+CA  C    SING N N
+CA  CB   SING N N
+CA  HA   SING N N
+C   O    DOUB N N
+C   OXT  SING N N
+CB  CG1  SING N N
+CB  CG2  SING N N
+CB  HB   SING N N
+CG1 HG11 SING N N
+CG1 HG12 SING N N
+CG1 HG13 SING N N
+CG2 HG21 SING N N
+CG2 HG22 SING N N
+CG2 HG23 SING N N
+OXT HXT  SING N N
+##
 """
 
 STANDARD_AA_DOC = gemmi.cif.read_string(_STANDARD_AA)

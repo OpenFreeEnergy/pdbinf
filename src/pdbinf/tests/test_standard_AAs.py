@@ -694,6 +694,83 @@ END
 """
 
 
+tyr = """\
+REMARK   1 PDBFIXER FROM: tyr.pdb
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16
+HETATM    1  H1  ACE     1      -2.669   3.302  -1.939  1.00  0.00           H  
+HETATM    2  CH3 ACE     1      -2.615   3.477  -0.852  1.00  0.00           C  
+HETATM    3  H2  ACE     1      -1.931   4.311  -0.628  1.00  0.00           H  
+HETATM    4  H3  ACE     1      -3.608   3.692  -0.436  1.00  0.00           H  
+HETATM    5  C   ACE     1      -2.162   2.216  -0.176  1.00  0.00           C  
+HETATM    6  O   ACE     1      -1.919   2.280   1.056  1.00  0.00           O  
+ATOM      7  N   TYR     2      -2.011   0.901  -0.990  1.00  0.00           N  
+ATOM      8  CA  TYR     2      -0.858  -0.113  -0.028  1.00  0.00           C  
+ATOM      9  C   TYR     2      -1.344  -1.390  -0.543  1.00  0.00           C  
+ATOM     10  O   TYR     2      -0.772  -1.986  -1.450  1.00  0.00           O  
+ATOM     11  CB  TYR     2       0.377   0.325  -0.811  1.00  0.00           C  
+ATOM     12  CG  TYR     2       1.691  -0.088  -0.411  1.00  0.00           C  
+ATOM     13  CD1 TYR     2       2.724   0.892  -0.380  1.00  0.00           C  
+ATOM     14  CD2 TYR     2       2.095  -1.296   0.015  1.00  0.00           C  
+ATOM     15  CE1 TYR     2       3.984   0.660   0.035  1.00  0.00           C  
+ATOM     16  CE2 TYR     2       3.391  -1.582   0.455  1.00  0.00           C  
+ATOM     17  CZ  TYR     2       4.324  -0.598   0.458  1.00  0.00           C  
+ATOM     18  OH  TYR     2       5.603  -0.897   0.904  1.00  0.00           O  
+ATOM     19  H   TYR     2      -1.679   0.715  -2.132  1.00  0.00           H  
+ATOM     20  HA  TYR     2      -0.949   0.180   0.958  1.00  0.00           H  
+ATOM     21  HB2 TYR     2       0.319   1.477  -0.726  1.00  0.00           H  
+ATOM     22  HB3 TYR     2       0.174   0.108  -1.870  1.00  0.00           H  
+ATOM     23  HD1 TYR     2       2.492   1.933  -0.745  1.00  0.00           H  
+ATOM     24  HD2 TYR     2       1.402  -2.152   0.070  1.00  0.00           H  
+ATOM     25  HE1 TYR     2       4.762   1.413   0.050  1.00  0.00           H  
+ATOM     26  HE2 TYR     2       3.636  -2.600   0.823  1.00  0.00           H  
+ATOM     27  HH  TYR     2       5.881  -0.800   1.864  1.00  0.00           H  
+HETATM   28  N   NME     3      -2.738  -2.032   0.122  1.00  0.00           N  
+HETATM   29  H   NME     3      -3.879  -2.027  -0.765  1.00  0.00           H  
+HETATM   30  C   NME     3      -2.935  -2.576   1.614  1.00  0.00           C  
+HETATM   31  H1  NME     3      -3.976  -3.886   1.635  1.00  0.00           H  
+HETATM   32  H2  NME     3      -2.307  -2.372   2.758  1.00  0.00           H  
+HETATM   33  H3  NME     3      -4.501  -1.488   2.065  1.00  0.00           H  
+TER      34      NME     3
+END
+"""
+
+
+val = """\
+REMARK   1 PDBFIXER FROM: val.pdb
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16
+HETATM    1  H1  ACE     1      -3.184  -2.429   1.330  1.00  0.00           H  
+HETATM    2  CH3 ACE     1      -2.232  -2.219   0.784  1.00  0.00           C  
+HETATM    3  H2  ACE     1      -2.107  -3.057   0.040  1.00  0.00           H  
+HETATM    4  H3  ACE     1      -1.411  -2.338   1.578  1.00  0.00           H  
+HETATM    5  C   ACE     1      -2.207  -0.898   0.120  1.00  0.00           C  
+HETATM    6  O   ACE     1      -3.172  -0.161   0.461  1.00  0.00           O  
+ATOM      7  N   VAL     2      -1.193  -0.424  -0.908  1.00  0.00           N  
+ATOM      8  CA  VAL     2       0.169   0.258  -0.537  1.00  0.00           C  
+ATOM      9  C   VAL     2       1.031  -0.384   0.459  1.00  0.00           C  
+ATOM     10  O   VAL     2       1.038  -0.208   1.681  1.00  0.00           O  
+ATOM     11  CB  VAL     2      -0.075   1.698   0.011  1.00  0.00           C  
+ATOM     12  CG1 VAL     2      -0.974   1.718   1.206  1.00  0.00           C  
+ATOM     13  CG2 VAL     2      -0.648   2.533  -1.166  1.00  0.00           C  
+ATOM     14  H   VAL     2      -1.450  -0.469  -2.135  1.00  0.00           H  
+ATOM     15  HA  VAL     2       0.800   0.452  -1.445  1.00  0.00           H  
+ATOM     16  HB  VAL     2       0.906   2.104   0.248  1.00  0.00           H  
+ATOM     17 HG11 VAL     2      -0.549   2.434   1.965  1.00  0.00           H  
+ATOM     18 HG12 VAL     2      -1.042   0.765   1.764  1.00  0.00           H  
+ATOM     19 HG13 VAL     2      -1.960   2.182   0.974  1.00  0.00           H  
+ATOM     20 HG21 VAL     2      -1.697   2.249  -1.423  1.00  0.00           H  
+ATOM     21 HG22 VAL     2      -0.553   3.593  -0.902  1.00  0.00           H  
+ATOM     22 HG23 VAL     2       0.044   2.296  -2.036  1.00  0.00           H  
+HETATM   23  N   NME     3       2.174  -1.574  -0.135  1.00  0.00           N  
+HETATM   24  H   NME     3       1.632  -2.905   0.465  1.00  0.00           H  
+HETATM   25  C   NME     3       3.749  -1.363  -0.068  1.00  0.00           C  
+HETATM   26  H1  NME     3       3.860  -1.180   1.921  1.00  0.00           H  
+HETATM   27  H2  NME     3       4.628  -2.565  -0.008  1.00  0.00           H  
+HETATM   28  H3  NME     3       4.420  -0.106  -0.268  1.00  0.00           H  
+TER      29      NME     3
+END
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -859,3 +936,19 @@ def test_thr():
 
     assert m.GetNumAtoms() == 26
     assert m.GetNumBonds() == 25
+
+
+def test_tyr():
+    m = Chem.MolFromPDBBlock(tyr, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 33
+    assert m.GetNumBonds() == 33
+
+
+def test_val():
+    m = Chem.MolFromPDBBlock(val, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 28
+    assert m.GetNumBonds() == 27
