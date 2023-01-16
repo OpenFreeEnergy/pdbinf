@@ -513,6 +513,43 @@ END
 """
 
 
+leu = """\
+REMARK   1 PDBFIXER FROM: leu.pdb                                                                                                           
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16                                                                                              
+HETATM    1  H1  ACE     1      -2.672   3.937   0.979  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      -2.085   3.063   1.380  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1      -1.582   3.390   2.331  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      -2.738   2.196   1.517  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1      -0.987   2.828   0.403  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      -0.068   3.688   0.379  1.00  0.00           O                                                              
+ATOM      7  N   LEU     2      -0.999   1.544  -0.555  1.00  0.00           N                                                              
+ATOM      8  CA  LEU     2       0.102   0.491  -0.193  1.00  0.00           C                                                              
+ATOM      9  C   LEU     2       1.496   1.013  -0.349  1.00  0.00           C                                                              
+ATOM     10  O   LEU     2       1.771   2.158  -0.726  1.00  0.00           O                                                              
+ATOM     11  CB  LEU     2      -0.003  -0.754  -1.010  1.00  0.00           C                                                              
+ATOM     12  CG  LEU     2      -1.306  -1.479  -0.862  1.00  0.00           C                                                              
+ATOM     13  CD1 LEU     2      -1.575  -1.915   0.559  1.00  0.00           C                                                              
+ATOM     14  CD2 LEU     2      -1.189  -2.771  -1.680  1.00  0.00           C                                                              
+ATOM     15  H   LEU     2      -0.572   2.072  -1.849  1.00  0.00           H                                                              
+ATOM     16  HA  LEU     2       0.028   0.180   0.888  1.00  0.00           H                                                              
+ATOM     17  HB2 LEU     2       0.115  -0.489  -2.075  1.00  0.00           H                                                              
+ATOM     18  HB3 LEU     2       0.815  -1.440  -0.732  1.00  0.00           H                                                              
+ATOM     19  HG  LEU     2      -2.171  -0.931  -1.230  1.00  0.00           H                                                              
+ATOM     20 HD11 LEU     2      -2.026  -1.128   1.159  1.00  0.00           H                                                              
+ATOM     21 HD12 LEU     2      -0.691  -2.395   1.027  1.00  0.00           H                                                              
+ATOM     22 HD13 LEU     2      -2.346  -2.738   0.493  1.00  0.00           H                                                              
+ATOM     23 HD21 LEU     2      -0.239  -3.243  -1.352  1.00  0.00           H                                                              
+ATOM     24 HD22 LEU     2      -2.013  -3.461  -1.440  1.00  0.00           H                                                              
+ATOM     25 HD23 LEU     2      -1.093  -2.560  -2.757  1.00  0.00           H                                                              
+HETATM   26  N   NME     3       2.801   0.011  -0.001  1.00  0.00           N                                                              
+HETATM   27  H   NME     3       3.500  -0.407  -1.232  1.00  0.00           H                                                              
+HETATM   28  C   NME     3       3.676   0.206   1.358  1.00  0.00           C                                                              
+HETATM   29  H1  NME     3       5.186   0.250   1.280  1.00  0.00           H                                                              
+HETATM   30  H2  NME     3       3.772  -1.805   1.704  1.00  0.00           H                                                              
+HETATM   31  H3  NME     3       3.096   0.490   2.586  1.00  0.00           H                                                              
+TER      32      NME     3                                                                                                                                                                                                                                           
+END   
+"""
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -633,6 +670,14 @@ def test_gly():
 
 
 def test_ile():
+    m = Chem.MolFromPDBBlock(ile, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 31
+    assert m.GetNumBonds() == 30
+
+
+def test_leu():
     m = Chem.MolFromPDBBlock(ile, proximityBonding=False, removeHs=False)
     m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
 
