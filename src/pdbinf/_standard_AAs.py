@@ -803,6 +803,64 @@ CD2 HD22 SING N N
 CD2 HD23 SING N N
 OXT HXT  SING N N
 ##
+data_MET
+#
+_chem_comp.id MET
+#
+loop_
+_chem_comp_atom.atom_id
+_chem_comp_atom.alt_atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.pdbx_aromatic_flag
+_chem_comp_atom.pdbx_leaving_atom_flag
+_chem_comp_atom.pdbx_stereo_config
+N   N   N N N N
+CA  CA  C N N S
+C   C   C N N N
+O   O   O N N N
+CB  CB  C N N N
+CG  CG  C N N N
+SD  SD  S N N N
+CE  CE  C N N N
+OXT OXT O N Y N
+H   H   H N N N
+H2  HN2 H N Y N
+HA  HA  H N N N
+HB2 1HB H N N N
+HB3 2HB H N N N
+HG2 1HG H N N N
+HG3 2HG H N N N
+HE1 1HE H N N N
+HE2 2HE H N N N
+HE3 3HE H N N N
+HXT HXT H N Y N
+#
+loop_
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.pdbx_aromatic_flag
+_chem_comp_bond.pdbx_stereo_config
+N   CA  SING N N
+N   H   SING N N
+N   H2  SING N N
+CA  C   SING N N
+CA  CB  SING N N
+CA  HA  SING N N
+C   O   DOUB N N
+C   OXT SING N N
+CB  CG  SING N N
+CB  HB2 SING N N
+CB  HB3 SING N N
+CG  SD  SING N N
+CG  HG2 SING N N
+CG  HG3 SING N N
+SD  CE  SING N N
+CE  HE1 SING N N
+CE  HE2 SING N N
+CE  HE3 SING N N
+OXT HXT SING N N
+##
 """
 
 STANDARD_AA_DOC = gemmi.cif.read_string(_STANDARD_AA)

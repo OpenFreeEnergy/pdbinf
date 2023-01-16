@@ -550,6 +550,45 @@ HETATM   31  H3  NME     3       3.096   0.490   2.586  1.00  0.00           H
 TER      32      NME     3                                                                                                                                                                                                                                           
 END   
 """
+
+
+met = """\
+REMARK   1 PDBFIXER FROM: met.pdb                                                                                                           
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16                                                                                              
+HETATM    1  H1  ACE     1      -0.521   4.167  -1.348  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      -0.301   4.239  -0.272  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1       0.429   5.024  -0.022  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      -1.289   4.426   0.240  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1       0.122   2.883   0.187  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1       1.058   2.888   1.063  1.00  0.00           O                                                              
+ATOM      7  N   MET     2      -0.529   1.652  -0.363  1.00  0.00           N                                                              
+ATOM      8  CA  MET     2      -0.594   0.310   0.345  1.00  0.00           C                                                              
+ATOM      9  C   MET     2      -1.615  -0.567  -0.298  1.00  0.00           C                                                              
+ATOM     10  O   MET     2      -2.268  -0.138  -1.282  1.00  0.00           O                                                              
+ATOM     11  CB  MET     2       0.652  -0.518   0.488  1.00  0.00           C                                                              
+ATOM     12  CG  MET     2       1.256  -0.888  -0.853  1.00  0.00           C                                                              
+ATOM     13  SD  MET     2       2.756  -1.879  -0.595  1.00  0.00           S                                                              
+ATOM     14  CE  MET     2       4.062  -0.924   0.189  1.00  0.00           C                                                              
+ATOM     15  H   MET     2      -2.061   2.114  -0.404  1.00  0.00           H                                                              
+ATOM     16  HA  MET     2      -0.976   0.430   1.410  1.00  0.00           H                                                              
+ATOM     17  HB2 MET     2       0.484  -1.478   1.021  1.00  0.00           H                                                              
+ATOM     18  HB3 MET     2       1.457   0.000   1.048  1.00  0.00           H                                                              
+ATOM     19  HG2 MET     2       0.580  -1.513  -1.459  1.00  0.00           H                                                              
+ATOM     20  HG3 MET     2       1.518   0.033  -1.431  1.00  0.00           H                                                              
+ATOM     21  HE1 MET     2       4.993  -0.915  -0.430  1.00  0.00           H                                                              
+ATOM     22  HE2 MET     2       4.333  -1.454   1.146  1.00  0.00           H                                                              
+ATOM     23  HE3 MET     2       3.747   0.124   0.388  1.00  0.00           H                                                              
+HETATM   24  N   NME     3      -1.950  -2.089   0.204  1.00  0.00           N                                                              
+HETATM   25  H   NME     3      -0.694  -2.951   0.245  1.00  0.00           H                                                              
+HETATM   26  C   NME     3      -3.365  -2.643   0.397  1.00  0.00           C                                                              
+HETATM   27  H1  NME     3      -3.291  -4.297  -0.697  1.00  0.00           H                                                              
+HETATM   28  H2  NME     3      -3.413  -3.718   1.791  1.00  0.00           H                                                              
+HETATM   29  H3  NME     3      -4.580  -2.316   0.037  1.00  0.00           H                                                              
+TER      30      NME     3                                                                                                                                                                                                                                            
+END                                                                                                                                         
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -683,3 +722,11 @@ def test_leu():
 
     assert m.GetNumAtoms() == 31
     assert m.GetNumBonds() == 30
+
+
+def test_met():
+    m = Chem.MolFromPDBBlock(met, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 29
+    assert m.GetNumBonds() == 28
