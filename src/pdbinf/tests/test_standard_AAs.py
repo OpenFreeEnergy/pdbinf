@@ -288,21 +288,7 @@ HETATM   31  C   NME     3       3.556   2.525   0.096  1.00  0.00           C
 HETATM   32  H1  NME     3       4.519   3.117   1.252  1.00  0.00           H                                                              
 HETATM   33  H2  NME     3       4.264   1.218  -0.292  1.00  0.00           H                                                              
 HETATM   34  H3  NME     3       3.463   3.431  -1.036  1.00  0.00           H                                                              
-TER      35      NME     3                                                                                                                  
-CONECT    1    2                                                                                                                            
-CONECT    2    5    1    3    4                                                                                                             
-CONECT    3    2                                                                                                                            
-CONECT    4    2                                                                                                                            
-CONECT    5    2    6    7                                                                                                                  
-CONECT    6    5                                                                                                                            
-CONECT    7    5                                                                                                                            
-CONECT    9   29                                                                                                                            
-CONECT   29    9   31   30                                                                                                                  
-CONECT   30   29                                                                                                                            
-CONECT   31   32   33   34   29                                                                                                             
-CONECT   32   31                                                                                                                            
-CONECT   33   31                                                                                                                            
-CONECT   34   31                                                                                                                            
+TER      35      NME     3                                                                                                                                                                                                                                        
 END                                                                                                                                         
 """
 
