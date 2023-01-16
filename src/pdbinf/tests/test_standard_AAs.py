@@ -629,6 +629,71 @@ END
 """
 
 
+ser = """\
+REMARK   1 PDBFIXER FROM: ser.pdb
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16
+HETATM    1  H1  ACE     1      -3.915   1.290   0.582  1.00  0.00           H  
+HETATM    2  CH3 ACE     1      -3.332   0.434   0.185  1.00  0.00           C  
+HETATM    3  H2  ACE     1      -2.724   0.036   1.019  1.00  0.00           H  
+HETATM    4  H3  ACE     1      -4.074  -0.318  -0.182  1.00  0.00           H  
+HETATM    5  C   ACE     1      -2.513   0.824  -0.993  1.00  0.00           C  
+HETATM    6  O   ACE     1      -2.973   1.787  -1.664  1.00  0.00           O  
+ATOM      7  N   SER     2      -1.144   0.138  -1.455  1.00  0.00           N  
+ATOM      8  CA  SER     2      -0.187  -0.229  -0.242  1.00  0.00           C  
+ATOM      9  C   SER     2       1.216   0.167  -0.536  1.00  0.00           C  
+ATOM     10  O   SER     2       1.454   0.710  -1.642  1.00  0.00           O  
+ATOM     11  CB  SER     2      -0.172  -1.690  -0.018  1.00  0.00           C  
+ATOM     12  OG  SER     2      -1.393  -2.255   0.281  1.00  0.00           O  
+ATOM     13  H   SER     2      -0.448   2.008  -0.860  1.00  0.00           H  
+ATOM     14  HA  SER     2      -0.473   0.237   0.750  1.00  0.00           H  
+ATOM     15  HB2 SER     2       0.270  -2.198  -0.922  1.00  0.00           H  
+ATOM     16  HB3 SER     2       0.537  -1.925   0.813  1.00  0.00           H  
+ATOM     17  HG  SER     2      -1.295  -3.247   0.161  1.00  0.00           H  
+HETATM   18  N   NME     3       2.422  -0.081   0.519  1.00  0.00           N  
+HETATM   19  H   NME     3       3.124  -1.415   0.371  1.00  0.00           H  
+HETATM   20  C   NME     3       3.644   1.156   0.539  1.00  0.00           C  
+HETATM   21  H1  NME     3       2.929   2.491   0.872  1.00  0.00           H  
+HETATM   22  H2  NME     3       4.446   1.186  -0.695  1.00  0.00           H  
+HETATM   23  H3  NME     3       4.599   0.896   1.799  1.00  0.00           H  
+TER      24      NME     3
+END
+"""
+
+
+thr = """\
+REMARK   1 PDBFIXER FROM: thr.pdb
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16
+HETATM    1  H1  ACE     1      -2.470   1.924   1.525  1.00  0.00           H  
+HETATM    2  CH3 ACE     1      -1.661   2.471   1.007  1.00  0.00           C  
+HETATM    3  H2  ACE     1      -1.785   3.556   1.204  1.00  0.00           H  
+HETATM    4  H3  ACE     1      -0.680   2.172   1.425  1.00  0.00           H  
+HETATM    5  C   ACE     1      -1.781   2.134  -0.438  1.00  0.00           C  
+HETATM    6  O   ACE     1      -2.326   3.014  -1.160  1.00  0.00           O  
+ATOM      7  N   THR     2      -1.282   0.786  -1.091  1.00  0.00           N  
+ATOM      8  CA  THR     2      -0.224  -0.024  -0.385  1.00  0.00           C  
+ATOM      9  C   THR     2       1.151   0.236  -0.822  1.00  0.00           C  
+ATOM     10  O   THR     2       1.411   1.056  -1.699  1.00  0.00           O  
+ATOM     11  CB  THR     2      -0.453  -1.536  -0.572  1.00  0.00           C  
+ATOM     12  OG1 THR     2       0.494  -2.288   0.060  1.00  0.00           O  
+ATOM     13  CG2 THR     2      -1.864  -1.819  -0.126  1.00  0.00           C  
+ATOM     14  H   THR     2      -1.946   0.360  -2.035  1.00  0.00           H  
+ATOM     15  HA  THR     2      -0.219   0.097   0.740  1.00  0.00           H  
+ATOM     16  HB  THR     2      -0.421  -1.679  -1.690  1.00  0.00           H  
+ATOM     17  HG1 THR     2       0.624  -3.134  -0.463  1.00  0.00           H  
+ATOM     18 HG21 THR     2      -2.058  -1.496   0.906  1.00  0.00           H  
+ATOM     19 HG22 THR     2      -2.110  -2.884  -0.319  1.00  0.00           H  
+ATOM     20 HG23 THR     2      -2.538  -1.217  -0.791  1.00  0.00           H  
+HETATM   21  N   NME     3       2.469  -0.596  -0.125  1.00  0.00           N  
+HETATM   22  H   NME     3       2.719  -1.889  -0.537  1.00  0.00           H  
+HETATM   23  C   NME     3       3.525   0.293   0.767  1.00  0.00           C  
+HETATM   24  H1  NME     3       3.130  -0.788   2.467  1.00  0.00           H  
+HETATM   25  H2  NME     3       3.327   1.507   1.371  1.00  0.00           H  
+HETATM   26  H3  NME     3       4.970  -0.256   0.782  1.00  0.00           H  
+TER      27      NME     3
+END
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -778,3 +843,19 @@ def test_phe():
 
     assert m.GetNumAtoms() == 32
     assert m.GetNumBonds() == 32
+
+
+def test_ser():
+    m = Chem.MolFromPDBBlock(ser, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 23
+    assert m.GetNumBonds() == 22
+
+
+def test_thr():
+    m = Chem.MolFromPDBBlock(thr, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 26
+    assert m.GetNumBonds() == 25

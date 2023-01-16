@@ -926,6 +926,103 @@ CE2 HE2 SING N N
 CZ  HZ  SING N N
 OXT HXT SING N N
 ##
+data_SER
+#
+_chem_comp.id SER
+#
+loop_
+_chem_comp_atom.atom_id
+_chem_comp_atom.alt_atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.pdbx_aromatic_flag
+_chem_comp_atom.pdbx_leaving_atom_flag
+_chem_comp_atom.pdbx_stereo_config
+N   N   N N N N
+CA  CA  C N N S
+C   C   C N N N
+O   O   O N N N
+CB  CB  C N N N
+OG  OG  O N N N
+OXT OXT O N Y N
+H   H   H N N N
+H2  HN2 H N Y N
+HA  HA  H N N N
+HB2 1HB H N N N
+HB3 2HB H N N N
+HG  HG  H N N N
+HXT HXT H N Y N
+#
+loop_
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.pdbx_aromatic_flag
+_chem_comp_bond.pdbx_stereo_config
+N   CA  SING N N
+N   H   SING N N
+N   H2  SING N N
+CA  C   SING N N
+CA  CB  SING N N
+CA  HA  SING N N
+C   O   DOUB N N
+C   OXT SING N N
+CB  OG  SING N N
+CB  HB2 SING N N
+CB  HB3 SING N N
+OG  HG  SING N N
+OXT HXT SING N N
+##
+data_THR
+_chem_comp.id THR
+#
+loop_
+_chem_comp_atom.atom_id
+_chem_comp_atom.alt_atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.pdbx_aromatic_flag
+_chem_comp_atom.pdbx_leaving_atom_flag
+_chem_comp_atom.pdbx_stereo_config
+N    N    N N N N
+CA   CA   C N N S
+C    C    C N N N
+O    O    O N N N
+CB   CB   C N N R
+OG1  OG1  O N N N
+CG2  CG2  C N N N
+OXT  OXT  O N Y N
+H    H    H N N N
+H2   HN2  H N Y N
+HA   HA   H N N N
+HB   HB   H N N N
+HG1  HG1  H N N N
+HG21 1HG2 H N N N
+HG22 2HG2 H N N N
+HG23 3HG2 H N N N
+HXT  HXT  H N Y N
+#
+loop_
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.pdbx_aromatic_flag
+_chem_comp_bond.pdbx_stereo_config
+N   CA   SING N N
+N   H    SING N N
+N   H2   SING N N
+CA  C    SING N N
+CA  CB   SING N N
+CA  HA   SING N N
+C   O    DOUB N N
+C   OXT  SING N N
+CB  OG1  SING N N
+CB  CG2  SING N N
+CB  HB   SING N N
+OG1 HG1  SING N N
+CG2 HG21 SING N N
+CG2 HG22 SING N N
+CG2 HG23 SING N N
+OXT HXT  SING N N
+##
 """
 
 STANDARD_AA_DOC = gemmi.cif.read_string(_STANDARD_AA)
