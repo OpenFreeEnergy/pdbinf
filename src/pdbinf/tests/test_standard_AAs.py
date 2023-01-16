@@ -410,6 +410,43 @@ END
 """
 
 
+gln = """\
+REMARK   1 PDBFIXER FROM: gln.pdb
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16
+HETATM    1  H1  ACE     1      -2.083   4.228  -0.223  1.00  0.00           H  
+HETATM    2  CH3 ACE     1      -1.717   3.161  -0.067  1.00  0.00           C  
+HETATM    3  H2  ACE     1      -1.919   2.693  -1.064  1.00  0.00           H  
+HETATM    4  H3  ACE     1      -2.298   2.783   0.774  1.00  0.00           H  
+HETATM    5  C   ACE     1      -0.305   3.151   0.283  1.00  0.00           C  
+HETATM    6  O   ACE     1       0.128   4.082   1.074  1.00  0.00           O  
+ATOM      7  N   GLN     2       0.874   2.112  -0.189  1.00  0.00           N  
+ATOM      8  CA  GLN     2       0.549   0.614   0.634  1.00  0.00           C  
+ATOM      9  C   GLN     2       1.810  -0.049   0.813  1.00  0.00           C  
+ATOM     10  O   GLN     2       2.397  -0.089   1.920  1.00  0.00           O  
+ATOM     11  CB  GLN     2      -0.635   0.032   0.029  1.00  0.00           C  
+ATOM     12  CG  GLN     2      -1.103  -1.293   0.640  1.00  0.00           C  
+ATOM     13  CD  GLN     2      -2.480  -1.567   0.064  1.00  0.00           C  
+ATOM     14  OE1 GLN     2      -3.160  -0.518  -0.242  1.00  0.00           O  
+ATOM     15  NE2 GLN     2      -2.994  -2.870  -0.146  1.00  0.00           N  
+ATOM     16  H   GLN     2       1.069   1.903  -1.275  1.00  0.00           H  
+ATOM     17  HA  GLN     2       0.226   1.012   1.712  1.00  0.00           H  
+ATOM     18  HB2 GLN     2      -1.510   0.699   0.128  1.00  0.00           H  
+ATOM     19  HB3 GLN     2      -0.487  -0.148  -1.080  1.00  0.00           H  
+ATOM     20  HG2 GLN     2      -1.121  -1.242   1.750  1.00  0.00           H  
+ATOM     21  HG3 GLN     2      -0.432  -2.085   0.318  1.00  0.00           H  
+ATOM     22 HE21 GLN     2      -2.387  -3.667  -0.457  1.00  0.00           H  
+ATOM     23 HE22 GLN     2      -3.997  -3.040  -0.004  1.00  0.00           H  
+HETATM   24  N   NME     3       2.598  -0.794  -0.507  1.00  0.00           N  
+HETATM   25  H   NME     3       3.446   0.335  -1.145  1.00  0.00           H  
+HETATM   26  C   NME     3       3.356  -2.175  -0.335  1.00  0.00           C  
+HETATM   27  H1  NME     3       4.512  -1.636   1.283  1.00  0.00           H  
+HETATM   28  H2  NME     3       4.701  -2.338  -1.099  1.00  0.00           H  
+HETATM   29  H3  NME     3       2.962  -3.296   0.325  1.00  0.00           H  
+TER      30      NME     3
+END
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -512,3 +549,10 @@ def test_glu():
     assert m.GetNumAtoms() == 28
     assert m.GetNumBonds() == 27
 
+
+def test_gln():
+    m = Chem.MolFromPDBBlock(gln, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 29
+    assert m.GetNumBonds() == 28
