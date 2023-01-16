@@ -374,6 +374,42 @@ END
 """
 
 
+glu = """\
+REMARK   1 PDBFIXER FROM: glu.pdb                                                                                                           
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16                                                                                              
+HETATM    1  H1  ACE     1      -0.311   3.925   1.334  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1       0.440   3.107   1.123  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1       0.386   2.364   1.930  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1       1.436   3.616   1.301  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1       0.359   2.610  -0.255  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      -0.306   3.417  -1.046  1.00  0.00           O                                                              
+ATOM      7  N   GLU     2       0.925   1.296  -0.862  1.00  0.00           N                                                              
+ATOM      8  CA  GLU     2      -0.025  -0.067  -0.630  1.00  0.00           C                                                              
+ATOM      9  C   GLU     2       0.690  -0.905   0.384  1.00  0.00           C                                                              
+ATOM     10  O   GLU     2       0.062  -1.499   1.344  1.00  0.00           O                                                              
+ATOM     11  CB  GLU     2      -1.291   0.510  -0.002  1.00  0.00           C                                                              
+ATOM     12  CG  GLU     2      -2.356  -0.363   0.440  1.00  0.00           C                                                              
+ATOM     13  CD  GLU     2      -2.953  -1.213  -0.589  1.00  0.00           C                                                              
+ATOM     14  OE1 GLU     2      -3.820  -0.851  -1.419  1.00  0.00           O                                                              
+ATOM     15  OE2 GLU     2      -2.561  -2.577  -0.691  1.00  0.00           O                                                              
+ATOM     16  H   GLU     2       1.988   1.207  -1.308  1.00  0.00           H                                                              
+ATOM     17  HA  GLU     2      -0.155  -0.586  -1.553  1.00  0.00           H                                                              
+ATOM     18  HB2 GLU     2      -1.115   1.302   0.726  1.00  0.00           H                                                              
+ATOM     19  HB3 GLU     2      -1.722   1.113  -0.885  1.00  0.00           H                                                              
+ATOM     20  HG2 GLU     2      -3.228   0.327   0.758  1.00  0.00           H                                                              
+ATOM     21  HG3 GLU     2      -2.170  -0.874   1.423  1.00  0.00           H                                                              
+ATOM     22  HE2 GLU     2      -3.368  -3.206  -0.916  1.00  0.00           H                                                              
+HETATM   23  N   NME     3       2.372  -1.105   0.356  1.00  0.00           N                                                              
+HETATM   24  H   NME     3       3.186   0.083   0.545  1.00  0.00           H                                                              
+HETATM   25  C   NME     3       3.211  -2.445   0.075  1.00  0.00           C                                                              
+HETATM   26  H1  NME     3       3.275  -2.809   2.199  1.00  0.00           H                                                              
+HETATM   27  H2  NME     3       4.588  -2.582   0.117  1.00  0.00           H                                                              
+HETATM   28  H3  NME     3       2.467  -3.794   0.078  1.00  0.00           H                                                              
+TER      29      NME     3                                                                                                                                                                                                                                            
+END                                                                                                                                         
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -467,3 +503,12 @@ def test_asn():
 
     assert m.GetNumAtoms() == 26
     assert m.GetNumBonds() == 25
+
+
+def test_glu():
+    m = Chem.MolFromPDBBlock(glu, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 28
+    assert m.GetNumBonds() == 27
+
