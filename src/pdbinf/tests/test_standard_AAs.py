@@ -589,6 +589,46 @@ END
 """
 
 
+phe = """\
+REMARK   1 PDBFIXER FROM: phe.pdb                                                                                                           
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-16                                                                                              
+HETATM    1  H1  ACE     1      -2.498   4.406   1.269  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      -1.816   3.901   0.548  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1      -0.908   4.550   0.490  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      -2.277   3.861  -0.449  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1      -1.477   2.523   0.971  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      -2.194   1.971   1.839  1.00  0.00           O                                                              
+ATOM      7  N   PHE     2      -0.220   1.748   0.336  1.00  0.00           N                                                              
+ATOM      8  CA  PHE     2      -0.725   0.524  -0.599  1.00  0.00           C                                                              
+ATOM      9  C   PHE     2      -1.266  -0.604   0.182  1.00  0.00           C                                                              
+ATOM     10  O   PHE     2      -1.258  -0.549   1.460  1.00  0.00           O                                                              
+ATOM     11  CB  PHE     2       0.396   0.089  -1.504  1.00  0.00           C                                                              
+ATOM     12  CG  PHE     2       1.594  -0.372  -0.775  1.00  0.00           C                                                              
+ATOM     13  CD1 PHE     2       2.619   0.506  -0.412  1.00  0.00           C                                                              
+ATOM     14  CD2 PHE     2       1.779  -1.685  -0.408  1.00  0.00           C                                                              
+ATOM     15  CE1 PHE     2       3.739   0.074   0.270  1.00  0.00           C                                                              
+ATOM     16  CE2 PHE     2       2.897  -2.128   0.274  1.00  0.00           C                                                              
+ATOM     17  CZ  PHE     2       3.898  -1.240   0.623  1.00  0.00           C                                                              
+ATOM     18  H   PHE     2       0.287   2.674  -0.687  1.00  0.00           H                                                              
+ATOM     19  HA  PHE     2      -1.541   0.898  -1.252  1.00  0.00           H                                                              
+ATOM     20  HB2 PHE     2       0.026  -0.747  -2.127  1.00  0.00           H                                                              
+ATOM     21  HB3 PHE     2       0.634   0.906  -2.216  1.00  0.00           H                                                              
+ATOM     22  HD1 PHE     2       2.551   1.535  -0.659  1.00  0.00           H                                                              
+ATOM     23  HD2 PHE     2       1.028  -2.411  -0.658  1.00  0.00           H                                                              
+ATOM     24  HE1 PHE     2       4.525   0.771   0.544  1.00  0.00           H                                                              
+ATOM     25  HE2 PHE     2       3.047  -3.160   0.565  1.00  0.00           H                                                              
+ATOM     26  HZ  PHE     2       4.787  -1.538   1.154  1.00  0.00           H                                                              
+HETATM   27  N   NME     3      -1.895  -1.963  -0.510  1.00  0.00           N                                                              
+HETATM   28  H   NME     3      -1.098  -2.369  -1.739  1.00  0.00           H                                                              
+HETATM   29  C   NME     3      -3.447  -2.368  -0.469  1.00  0.00           C                                                              
+HETATM   30  H1  NME     3      -4.206  -2.483   0.678  1.00  0.00           H                                                              
+HETATM   31  H2  NME     3      -2.855  -4.405  -0.117  1.00  0.00           H                                                              
+HETATM   32  H3  NME     3      -4.125  -2.918  -1.756  1.00  0.00           H                                                              
+TER      33      NME     3                                                                                                                                                                                                                                      
+END 
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -730,3 +770,11 @@ def test_met():
 
     assert m.GetNumAtoms() == 29
     assert m.GetNumBonds() == 28
+
+
+def test_phe():
+    m = Chem.MolFromPDBBlock(phe, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 32
+    assert m.GetNumBonds() == 32
