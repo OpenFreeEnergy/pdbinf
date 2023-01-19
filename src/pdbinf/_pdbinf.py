@@ -325,6 +325,7 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
                 continue
             mol, v = assign_intra_props(mol, range(i, j), t[resname])
             valence += v
+            break  # avoid double assignment, ordering of templates is relevant
 
     # 2) assign bonds between residues
     mol, v = assign_inter_residue_bonds(mol)
