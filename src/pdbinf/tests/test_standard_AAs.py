@@ -771,6 +771,121 @@ END
 """
 
 
+hid = """\
+REMARK   1 PDBFIXER FROM: MainChain_HID.pdb                                                                                                 
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-19                                                                                              
+CRYST1   48.000   48.000   48.000  90.00  90.00  90.00 P 1           1                                                                      
+HETATM    1  H1  ACE     1      25.833  25.385  24.879  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      25.917  26.309  24.308  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1      25.232  27.053  24.711  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      25.682  26.115  23.263  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1      27.332  26.822  24.416  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      28.152  26.229  25.104  1.00  0.00           O                                                              
+ATOM      7  N   HIS     2      27.617  27.929  23.736  1.00  0.00           N                                                              
+ATOM      8  H   HIS     2      26.883  28.379  23.211  1.00  0.00           H                                                              
+ATOM      9  CA  HIS     2      28.927  28.585  23.730  1.00  0.00           C                                                              
+ATOM     10  HA  HIS     2      29.384  28.462  24.713  1.00  0.00           H                                                              
+ATOM     11  CB  HIS     2      29.832  27.896  22.692  1.00  0.00           C                                                              
+ATOM     12  HB2 HIS     2      29.935  26.841  22.952  1.00  0.00           H                                                              
+ATOM     13  HB3 HIS     2      29.357  27.955  21.711  1.00  0.00           H                                                              
+ATOM     14  CG  HIS     2      31.208  28.502  22.594  1.00  0.00           C                                                              
+ATOM     15  ND1 HIS     2      31.580  29.555  21.786  1.00  0.00           N                                                              
+ATOM     16  HD1 HIS     2      31.000  30.010  21.097  1.00  0.00           H                                                              
+ATOM     17  CE1 HIS     2      32.855  29.868  22.072  1.00  0.00           C                                                              
+ATOM     18  HE1 HIS     2      33.429  30.653  21.595  1.00  0.00           H                                                              
+ATOM     19  NE2 HIS     2      33.323  29.069  23.042  1.00  0.00           N                                                              
+ATOM     20  CD2 HIS     2      32.287  28.194  23.379  1.00  0.00           C                                                              
+ATOM     21  HD2 HIS     2      32.318  27.433  24.148  1.00  0.00           H                                                              
+ATOM     22  C   HIS     2      28.782  30.093  23.464  1.00  0.00           C                                                              
+ATOM     23  O   HIS     2      27.862  30.512  22.762  1.00  0.00           O                                                              
+HETATM   24  N   NME     3      29.697  30.905  24.008  1.00  0.00           N                                                              
+HETATM   25  H   NME     3      30.452  30.480  24.526  1.00  0.00           H                                                              
+HETATM   26  C   NME     3      29.703  32.358  23.860  1.00  0.00           C                                                              
+HETATM   27  H1  NME     3      28.776  32.774  24.261  1.00  0.00           H                                                              
+HETATM   28  H2  NME     3      30.550  32.786  24.397  1.00  0.00           H                                                              
+HETATM   29  H3  NME     3      29.775  32.623  22.804  1.00  0.00           H                                                              
+TER      30      NME     3                                                                                                                                                                                                                                             
+END
+"""
+
+
+hie = """\
+REMARK   1 PDBFIXER FROM: MainChain_HIE.pdb                                                                                                 
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-19                                                                                              
+CRYST1   48.000   48.000   48.000  90.00  90.00  90.00 P 1           1                                                                      
+HETATM    1  H1  ACE     1      26.547  25.127  24.896  1.00  0.00           H                                                              
+HETATM    2  CH3 ACE     1      26.384  26.111  24.459  1.00  0.00           C                                                              
+HETATM    3  H2  ACE     1      25.722  26.691  25.099  1.00  0.00           H                                                              
+HETATM    4  H3  ACE     1      25.944  26.005  23.469  1.00  0.00           H                                                              
+HETATM    5  C   ACE     1      27.711  26.823  24.340  1.00  0.00           C                                                              
+HETATM    6  O   ACE     1      28.742  26.269  24.700  1.00  0.00           O                                                              
+ATOM      7  N   HIS     2      27.683  28.053  23.832  1.00  0.00           N                                                              
+ATOM      8  H   HIS     2      26.789  28.464  23.600  1.00  0.00           H                                                              
+ATOM      9  CA  HIS     2      28.855  28.930  23.709  1.00  0.00           C                                                              
+ATOM     10  HA  HIS     2      29.478  28.792  24.595  1.00  0.00           H                                                              
+ATOM     11  CB  HIS     2      29.680  28.525  22.472  1.00  0.00           C                                                              
+ATOM     12  HB2 HIS     2      29.554  27.459  22.277  1.00  0.00           H                                                              
+ATOM     13  HB3 HIS     2      29.319  29.064  21.595  1.00  0.00           H                                                              
+ATOM     14  CG  HIS     2      31.158  28.778  22.644  1.00  0.00           C                                                              
+ATOM     15  ND1 HIS     2      31.795  30.014  22.526  1.00  0.00           N                                                              
+ATOM     16  CE1 HIS     2      33.088  29.791  22.803  1.00  0.00           C                                                              
+ATOM     17  HE1 HIS     2      33.858  30.552  22.787  1.00  0.00           H                                                              
+ATOM     18  NE2 HIS     2      33.286  28.498  23.110  1.00  0.00           N                                                              
+ATOM     19  HE2 HIS     2      34.171  28.087  23.374  1.00  0.00           H                                                              
+ATOM     20  CD2 HIS     2      32.078  27.843  23.019  1.00  0.00           C                                                              
+ATOM     21  HD2 HIS     2      31.875  26.799  23.222  1.00  0.00           H                                                              
+ATOM     22  C   HIS     2      28.427  30.408  23.673  1.00  0.00           C                                                              
+ATOM     23  O   HIS     2      27.232  30.703  23.654  1.00  0.00           O                                                              
+HETATM   24  N   NME     3      29.392  31.333  23.673  1.00  0.00           N                                                              
+HETATM   25  H   NME     3      30.346  31.002  23.582  1.00  0.00           H                                                              
+HETATM   26  C   NME     3      29.164  32.776  23.655  1.00  0.00           C                                                              
+HETATM   27  H1  NME     3      28.275  33.023  24.241  1.00  0.00           H                                                              
+HETATM   28  H2  NME     3      30.026  33.293  24.079  1.00  0.00           H                                                              
+HETATM   29  H3  NME     3      29.012  33.109  22.627  1.00  0.00           H                                                              
+TER      30      NME     3                                                                                                                                                                                                                                          
+END   
+"""
+
+
+hip = """\
+REMARK   1 PDBFIXER FROM: MainChain_HIP.pdb
+REMARK   1 CREATED WITH OPENMM 7.7, 2023-01-19
+CRYST1   48.000   48.000   48.000  90.00  90.00  90.00 P 1           1 
+HETATM    1  H1  ACE     1      26.025  25.793  25.230  1.00  0.00           H  
+HETATM    2  CH3 ACE     1      26.116  26.620  24.526  1.00  0.00           C  
+HETATM    3  H2  ACE     1      25.418  27.407  24.805  1.00  0.00           H  
+HETATM    4  H3  ACE     1      25.895  26.259  23.522  1.00  0.00           H  
+HETATM    5  C   ACE     1      27.528  27.157  24.573  1.00  0.00           C  
+HETATM    6  O   ACE     1      28.353  26.667  25.333  1.00  0.00           O  
+ATOM      7  N   HIS     2      27.824  28.163  23.745  1.00  0.00           N  
+ATOM      8  H   HIS     2      27.091  28.499  23.138  1.00  0.00           H  
+ATOM      9  CA  HIS     2      29.164  28.765  23.637  1.00  0.00           C  
+ATOM     10  HA  HIS     2      29.647  28.698  24.615  1.00  0.00           H  
+ATOM     11  CB  HIS     2      30.006  27.920  22.653  1.00  0.00           C  
+ATOM     12  HB2 HIS     2      30.017  26.885  23.004  1.00  0.00           H  
+ATOM     13  HB3 HIS     2      29.518  27.922  21.676  1.00  0.00           H  
+ATOM     14  CG  HIS     2      31.435  28.384  22.466  1.00  0.00           C  
+ATOM     15  ND1 HIS     2      31.821  29.534  21.805  1.00  0.00           N  
+ATOM     16  HD1 HIS     2      31.159  30.220  21.431  1.00  0.00           H  
+ATOM     17  CE1 HIS     2      33.166  29.614  21.840  1.00  0.00           C  
+ATOM     18  HE1 HIS     2      33.760  30.419  21.412  1.00  0.00           H  
+ATOM     19  NE2 HIS     2      33.642  28.539  22.508  1.00  0.00           N  
+ATOM     20  HE2 HIS     2      34.621  28.336  22.692  1.00  0.00           H  
+ATOM     21  CD2 HIS     2      32.568  27.756  22.908  1.00  0.00           C  
+ATOM     22  HD2 HIS     2      32.608  26.824  23.465  1.00  0.00           H  
+ATOM     23  C   HIS     2      29.080  30.263  23.294  1.00  0.00           C  
+ATOM     24  O   HIS     2      29.363  30.664  22.164  1.00  0.00           O  
+HETATM   25  N   NME     3      28.702  31.081  24.284  1.00  0.00           N  
+HETATM   26  H   NME     3      28.479  30.662  25.174  1.00  0.00           H  
+HETATM   27  C   NME     3      28.589  32.539  24.180  1.00  0.00           C  
+HETATM   28  H1  NME     3      27.543  32.826  24.055  1.00  0.00           H  
+HETATM   29  H2  NME     3      28.972  33.008  25.088  1.00  0.00           H  
+HETATM   30  H3  NME     3      29.160  32.914  23.328  1.00  0.00           H  
+TER      31      NME     3
+END
+"""
+
+
 def test_ala_ala():
     m = Chem.MolFromPDBBlock(ala_ala, proximityBonding=False, removeHs=False)
 
@@ -952,3 +1067,37 @@ def test_val():
 
     assert m.GetNumAtoms() == 28
     assert m.GetNumBonds() == 27
+
+
+def test_hie():
+    m = Chem.MolFromPDBBlock(hie, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 29
+    assert m.GetNumBonds() == 29
+    for at in m.GetAtoms():
+        assert at.GetFormalCharge() == 0
+
+
+def test_hid():
+    m = Chem.MolFromPDBBlock(hid, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 29
+    assert m.GetNumBonds() == 29
+    for at in m.GetAtoms():
+        assert at.GetFormalCharge() == 0
+
+
+def test_hip():
+    m = Chem.MolFromPDBBlock(hip, proximityBonding=False, removeHs=False)
+    m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 30
+    assert m.GetNumBonds() == 30
+    for i, at in enumerate(m.GetAtoms()):
+        if i == 14:
+            assert at.GetMonomerInfo().GetName().strip() == 'ND1'
+            assert at.GetFormalCharge() == 1
+        else:
+            assert at.GetFormalCharge() == 0

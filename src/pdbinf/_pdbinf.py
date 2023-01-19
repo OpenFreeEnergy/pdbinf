@@ -278,6 +278,23 @@ def assign_charge(mol: Chem.Mol, valence) -> Chem.Mol:
     return mol
 
 
+def histidine_check(mol, i, j) -> str:
+    # returns either HIS (i.e. HIE) or HID, (HIP is covered by HIS)
+    # these templates differ on where the double bond (and charge) is placed
+    has_HD1 = False
+    has_HE2 = False
+    for x in range(i, j):
+        nm = mol.GetAtomWithIdx(x).GetMonomerInfo().GetName().strip()
+
+        has_HD1 |= nm == 'HD1'
+        has_HE2 |= nm == 'HE2'
+
+    if has_HD1 and not has_HE2:
+        return 'HID'
+    else:
+        return 'HIS'
+
+
 def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem.Mol:
     """Take an RDKit Molecule and assign aromaticity and bonds
 
@@ -299,6 +316,9 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
     # 1) assign properties inside each Residue
     valence = np.zeros(mol.GetNumAtoms(), dtype=int)
     for i, j, resname, _ in residue_spans(mol):
+        if resname == 'HIS':
+            resname = histidine_check(mol, i, j)
+
         for t in templates:
             # check if resname in template doc
             if not doc_contains(t, resname):
