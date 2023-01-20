@@ -8,7 +8,11 @@ version = "0.0.1"
 authors=[
     {name="Richard J Gowers", email="richardjgowers@gmail.com"},
 ]
-description="not sure yet"
+dependencies = [
+  'rdkit',
+  'gemmi',
+]
+description="Load PDB files into rdkit with nonstandard residues"
 readme="README.md"
 requires-python = ">=3.9"
 classifiers = [
