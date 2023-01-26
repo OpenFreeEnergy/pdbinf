@@ -5,7 +5,7 @@ from rdkit.Chem import AllChem
 import logging
 import pathlib
 import numpy as np
-from typing import Iterator
+from typing import Iterator, Union
 
 logger = logging.getLogger(__name__)
 
@@ -120,7 +120,7 @@ def assign_intra_props(mol, atom_span: range, reference_block):
     return mol, valence
 
 
-def load_pdb_file(pdb_path: str | pathlib.Path,
+def load_pdb_file(pdb_path: Union[str, pathlib.Path],
                   templates: list[gemmi.cif.Document]) -> Chem.Mol:
     """Load a PDB File and assign bonds (with order)
 
