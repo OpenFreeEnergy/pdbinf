@@ -41,9 +41,10 @@ def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, str, str]]:
         mi = atom.GetMonomerInfo()
         resname = mi.GetResidueName()
         resnum = mi.GetResidueNumber()
+        icode = mi.GetInsertionCode()
         chain = mi.GetChainId()
 
-        return resname, resnum, chain
+        return resname, resnum, icode, chain
 
     begin = 0
     current = reshash(m.GetAtomWithIdx(0))
@@ -52,12 +53,12 @@ def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, str, str]]:
         nxt = reshash(m.GetAtomWithIdx(i))
 
         if nxt != current:
-            yield begin, i, current[0], current[2]
+            yield begin, i, current[0], current[-1]
 
             current = nxt
             begin = i
 
-    yield begin, m.GetNumAtoms(), current[0], current[2]
+    yield begin, m.GetNumAtoms(), current[0], current[-1]
 
 
 def assign_intra_props(mol, atom_span: range, reference_block):
@@ -195,7 +196,7 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
     for i_B, j_B, resname_B, chainid_B in res_gen:
         logger.debug(f'trying {resname_A}({i_A} {j_A}) {resname_B}({i_B} {j_B})')
         if chainid_A != chainid_B:
-            logger.debug('skipping due to chain break')
+            logger.debug(f'skipping due to chain break (chain id {chainid_A} vs {chainid_B})')
             # new chain so skip adding bonds from this residue
             i_A, j_A, resname_A, chainid_A = i_B, j_B, resname_B, chainid_B
             continue
@@ -209,18 +210,18 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
             d1 = conf.GetAtomPosition(C_A).Distance(conf.GetAtomPosition(N_B))
             d2 = conf.GetAtomPosition(N_A).Distance(conf.GetAtomPosition(C_B))
             if d1 < MAX_AMIDE_LENGTH:
-                logger.debug(f'C-N distance {d1}')
+                logger.debug(f'accepting C-N distance {d1}')
                 bonds.append((C_A, N_B))
             elif d2 < MAX_AMIDE_LENGTH:
-                logger.debug(f'N-C distance {d2}')
+                logger.debug(f'accepting N-C distance {d2}')
                 bonds.append((N_A, C_B))
             else:
-                raise ValueError
+                raise ValueError("Failed to find inter residue bond")
         else:
             # find nonstandard residue bond
             i, j, d = smallest_connection(mol, i_A, j_A, i_B, j_B, conf)
-            logger.debug(f'nonstandard bond {i}-{j} {d}')
             if d < MAX_AMIDE_LENGTH:
+                logger.debug(f'accepting nonstandard bond {i}-{j} {d}')
                 bonds.append((i, j))
 
         i_A, j_A, resname_A, chainid_A = i_B, j_B, resname_B, chainid_B
