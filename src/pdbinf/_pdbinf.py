@@ -239,9 +239,11 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
     return em.GetMol(), valence
 
 
-def assign_sulphur_bonds(mol) -> Chem.Mol:
+def assign_sulphur_bonds(mol):
     sulphurs = [i for i in range(mol.GetNumAtoms())
                 if mol.GetAtomWithIdx(i).GetAtomicNum() == 16]
+
+    valence = np.zeros(mol.GetNumAtoms(), dtype=int)
 
     conf = mol.GetConformer()
     bonds = []
@@ -254,8 +256,10 @@ def assign_sulphur_bonds(mol) -> Chem.Mol:
 
     for i, j in bonds:
         em.AddBond(i, j, order=Chem.BondType.SINGLE)
+        valence[i] += 1
+        valence[j] += 1
 
-    return em.GetMol()
+    return em.GetMol(), valence
 
 
 def assign_charge(mol: Chem.Mol, valence) -> Chem.Mol:
@@ -335,7 +339,8 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
     valence += v
 
     # 3) sulphur bridges
-    mol = assign_sulphur_bonds(mol)
+    mol, v = assign_sulphur_bonds(mol)
+    valence += v
 
     # 4) ch ch ch ch charges
     mol = assign_charge(mol, valence)
