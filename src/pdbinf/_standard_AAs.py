@@ -1268,6 +1268,30 @@ CE1 HE1 SING N N
 NE2 HE2 SING N N
 OXT HXT SING N N
 ##
+data_HOH
+#
+_chem_comp.id HOH
+#
+loop_
+_chem_comp_atom.atom_id
+_chem_comp_atom.alt_atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.pdbx_aromatic_flag
+_chem_comp_atom.pdbx_leaving_atom_flag
+_chem_comp_atom.pdbx_stereo_config
+O  O  N N N N
+H1 H1 N N N N
+H2 H2 N N N N
+#
+loop_
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.pdbx_aromatic_flag
+_chem_comp_bond.pdbx_stereo_config
+O  H1 SING N N
+O  H2 SING N N
+##
 """
 
 STANDARD_AA_DOC = gemmi.cif.read_string(_STANDARD_AA)
