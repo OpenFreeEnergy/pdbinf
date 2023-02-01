@@ -1101,3 +1101,16 @@ def test_hip():
             assert at.GetFormalCharge() == 1
         else:
             assert at.GetFormalCharge() == 0
+
+
+def test_file_entrypoint(tmpdir):
+    # all above tests aren't using files, so write a file to check that works
+    f = str(tmpdir / 'foo.pdb')
+
+    with open(f, 'w') as out:
+        out.write(hip)
+
+    m = pdbinf.load_pdb_file(f, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 30
+    assert m.GetNumBonds() == 30
