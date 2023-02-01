@@ -1,6 +1,7 @@
 import gemmi
 import pdbinf
 from rdkit import Chem
+import pytest
 
 # copied straight from ccd
 tpo_template = """\
@@ -201,3 +202,11 @@ def test_tpo():
 
             assert len(b) == 1
             assert b[0].GetBondType() == Chem.BondType.DOUBLE
+
+
+def test_tpo_fail():
+    m = Chem.MolFromPDBBlock(tpo, proximityBonding=False, removeHs=False)
+
+    with pytest.raises(ValueError, match="Failed to find template"):
+        m = pdbinf.assign_pdb_bonds(m, templates=[pdbinf.STANDARD_AA_DOC])
+
