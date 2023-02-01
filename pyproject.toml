@@ -20,3 +20,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/OpenFreeEnergy/pdbinf"
+"Bug Tracker" = "https://github.com/OpenFreeEnergy/pdbinf/issues"
