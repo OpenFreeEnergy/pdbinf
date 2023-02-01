@@ -56,10 +56,11 @@ jobs:
           pytest -n 2 -v --cov=pdbinf --cov-report=xml
 
       - name: codecov
-        if: ${{ github.repository == 'OpenFreeEnergy/pdbinf'
-                && github.event != 'schedule' }}
-        uses: codecov/codecov-action@v2
+        if: ${{ github.repository == 'OpenFreeEnergy/pdbinf' }}
+        uses: codecov/codecov-action@v3
         with:
-          file: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          env_vars: OS,PYTHON
           fail_ci_if_error: True
           verbose: True
