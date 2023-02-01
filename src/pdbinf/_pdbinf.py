@@ -109,7 +109,7 @@ def assign_intra_props(mol, atom_span: range, reference_block):
 
     mol = em.GetMol()
 
-    for nm, arom in reference_block.find('_chem_cond_bond',
+    for nm, arom in reference_block.find('_chem_comp_bond',
                                          ['.atom_id', '.pdbx_aromatic_flag']):
         try:
             idx = nm_2_idx[nm]
