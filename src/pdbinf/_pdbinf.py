@@ -323,7 +323,11 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
     # 1) assign properties inside each Residue
     valence = np.zeros(mol.GetNumAtoms(), dtype=int)
     for i, j, resname, _ in residue_spans(mol):
-        if resname == 'HIS':
+        # for ions, we can let this slide
+        if (j - i) == 1:
+            logger.debug(f"Skipping presumed ion called: {resname}")
+            continue
+        elif resname == 'HIS':
             resname = histidine_check(mol, i, j)
 
         for t in templates:
