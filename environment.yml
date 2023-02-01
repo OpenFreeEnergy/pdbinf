@@ -1,0 +1,16 @@
+name: gufe
+channels:
+  - conda-forge
+dependencies:
+  - coverage
+  - numpy
+  - pip
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  - typing-extensions
+  - gemmi
+  - rdkit
+  # docs
+  - myst-parser
+  - pydata-sphinx-theme

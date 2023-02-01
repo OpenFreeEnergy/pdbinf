@@ -1,0 +1,65 @@
+name: "CI"
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash -l {0}
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.OS }}-latest
+    name: "tests"
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu', 'macos']
+        python-version:
+          - 3.9
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+            auto-update-conda: true
+            use-mamba: true
+            python-version: ${{ matrix.python-version }}
+            miniforge-variant: Mambaforge
+            environment-file: environment.yml
+            activate-environment: gufe
+
+      - name: "Install"
+        run: python setup.py develop --no-deps
+
+      - name: "Test imports"
+        run: |
+          # if we add more to this, consider changing to for + env vars
+          python -Ic "import pdbinf"
+
+      - name: "Environment Information"
+        run: |
+          mamba info -a
+          mamba list
+
+      - name: "Run tests"
+        run: |
+          pytest -n 2 -v --cov=pdbinf --cov-report=xml
+
+      - name: codecov
+        if: ${{ github.repository == 'OpenFreeEnergy/pdbinf'
+                && github.event != 'schedule' }}
+        uses: codecov/codecov-action@v2
+        with:
+          file: coverage.xml
+          fail_ci_if_error: True
+          verbose: True
