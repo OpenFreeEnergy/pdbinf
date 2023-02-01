@@ -1,4 +1,4 @@
-name: gufe
+name: pdbinf
 channels:
   - conda-forge
 dependencies:

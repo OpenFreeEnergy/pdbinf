@@ -36,7 +36,7 @@ jobs:
             python-version: ${{ matrix.python-version }}
             miniforge-variant: Mambaforge
             environment-file: environment.yml
-            activate-environment: gufe
+            activate-environment: pdbinf
 
       - name: "Install"
         run: python setup.py develop --no-deps
