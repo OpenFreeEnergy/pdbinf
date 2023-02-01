@@ -39,7 +39,7 @@ jobs:
             activate-environment: pdbinf
 
       - name: "Install"
-        run: python setup.py develop --no-deps
+        run: pip install --no-deps -e .
 
       - name: "Test imports"
         run: |
