@@ -21,6 +21,14 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[project.optional-dependencies]
+tests = [
+    "pytest",
+    "pytest-cov",
+    "coverage",
+    "pooch",
+]
+
 [project.urls]
 "Homepage" = "https://github.com/OpenFreeEnergy/pdbinf"
 "Bug Tracker" = "https://github.com/OpenFreeEnergy/pdbinf/issues"

@@ -2,15 +2,17 @@ name: pdbinf
 channels:
   - conda-forge
 dependencies:
-  - coverage
   - numpy
   - pip
-  - pytest
-  - pytest-cov
-  - pytest-xdist
   - typing-extensions
   - gemmi
   - rdkit
+  # tests
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  - coverage
+  - pooch
   # docs
   - myst-parser
   - pydata-sphinx-theme
