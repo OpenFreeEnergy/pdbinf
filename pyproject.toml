@@ -11,6 +11,7 @@ authors=[
 dependencies = [
   'rdkit',
   'gemmi',
+  'numpy',
 ]
 description="Load PDB files into rdkit with nonstandard residues"
 readme="README.md"
