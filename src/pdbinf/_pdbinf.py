@@ -1,5 +1,47 @@
 # This code is part of pdbinf and is licensed under the MIT license.
 # For details, see https://github.com/OpenFreeEnergy/pdbinf
+"""pdbinf - assign PDB bond information from PDBx templates
+
+
+PDBFile requirements
+--------------------
+
+If inputting a PDB file, this must be "PDB compliant".  In practical terms,
+this means it should follow standard naming for atoms and residues.  One way to
+enforce this is to first pass the file through `pdbfixer`
+(https://github.com/openmm/pdbfixer)
+
+RDKit Mol requirements
+----------------------
+
+RDKit molecules that are input are required to have:
+- MonomerInfo() assigned, including
+  - Name
+  - ResidueName
+  - ResidueNumber
+  - InsertionCode
+  - ChainId
+- a Conformer (only the first will be used)
+
+Template requirements
+---------------------
+Currently the following PDBx fields are used and required:
+
+_chem_comp_atom
+ - atom_id
+   matches against rdkit atom MonomerInfo().GetName() property
+ - pdbx_aromatic_flag
+   used to set IsAromatic on rdkit Atoms
+
+_chem_comp_bond
+ - atom_id_1, atom_id_2
+   must match against atom_id in _chem_comp_atom entries
+ - pdbx_aromatic_flag
+   if 'Y' assigns bonds to Chem.BondType.AROMATIC
+ - value_order
+   used to calculate the valence table, which is used for formal charge
+
+"""
 import itertools
 import gemmi
 from rdkit import Chem
