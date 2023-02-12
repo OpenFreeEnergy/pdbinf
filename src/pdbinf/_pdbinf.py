@@ -185,6 +185,82 @@ def load_pdb_file(pdb_path: Union[str, pathlib.Path],
     return assign_pdb_bonds(m, templates)
 
 
+def gemmi_to_rdkit(block: gemmi.cif.Block):
+    """Convert a gemmi Block to an RDKit mol
+
+    used for PDBx loading while RDKit lacks support
+    """
+    pt = Chem.GetPeriodicTable()
+
+    m = Chem.Mol()
+    em = AllChem.EditableMol(m)
+    pos = []
+
+    for row in block.find('_atom_site.',
+                      ['group_PDB', 'type_symbol', 'label_atom_id',
+                       'label_comp_id',
+                       'label_asym_id', 'label_seq_id', 'pdbx_PDB_ins_code',
+                       'Cartn_x', 'Cartn_y', 'Cartn_z']):
+        het_status, elem, name, resname, chainid, resnum, icode, posx, posy, posz = row
+
+        if icode == '?':
+            icode = ''
+
+        a = Chem.Atom(pt.GetAtomicNumber(elem))
+
+        mi = Chem.AtomPDBResidueInfo()
+        mi.SetIsHeteroAtom(het_status.startswith('HETATM'))
+        mi.SetName(name)
+        mi.SetResidueName(resname)
+        mi.SetChainId(chainid)
+        mi.SetResidueNumber(int(resnum))
+        mi.SetInsertionCode(icode)
+        a.SetMonomerInfo(mi)
+
+        em.AddAtom(a)
+        pos.append((float(posx), float(posy), float(posz)))
+
+    conf = Chem.Conformer(len(pos))
+    conf.Set3D(True)
+    for i, p in enumerate(pos):
+        conf.SetAtomPosition(i, p)
+
+    m = em.GetMol()
+    m.AddConformer(conf)
+
+    return m
+
+
+def load_pdbx_file(pdbx_path: Union[str, pathlib.Path],
+                   templates: list[gemmi.cif.Document]) -> Chem.Mol:
+    """Load a pdbx file and assign bond information from templates
+
+    Parameters
+    ----------
+    pdbx_path: str or pathlib.Path
+        path to the pdbx file
+    templates : list of gemmi.cif.Document
+        the templates to be applied
+
+    Returns
+    -------
+    model : Chem.Mol
+
+    Raises
+    ------
+    RuntimeError
+      if there is more than one block in the file
+    """
+    # first load pdbx using gemmi
+    d = gemmi.cif.read_file(pdbx_path)
+    block = d.sole_block()
+
+    # transfer gemmi object into rdkit
+    m = gemmi_to_rdkit(block)
+
+    return assign_pdb_bonds(m, templates)
+
+
 def doc_contains(d: gemmi.cif.Document, label: str) -> bool:
     # hack while gemmi release not pushed out yet
     try:
