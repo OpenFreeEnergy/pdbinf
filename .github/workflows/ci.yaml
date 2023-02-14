@@ -35,7 +35,7 @@ jobs:
             use-mamba: true
             python-version: ${{ matrix.python-version }}
             miniforge-variant: Mambaforge
-            environment-file: environment.yml
+            environment-file: ci_env.yml
             activate-environment: pdbinf
 
       - name: "Install"
@@ -62,5 +62,5 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
           env_vars: OS,PYTHON
-          fail_ci_if_error: True
+          fail_ci_if_error: False
           verbose: True

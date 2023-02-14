@@ -1,0 +1,20 @@
+name: pdbinf
+channels:
+  - jaimergp/label/unsupported-cudatoolkit-shim
+  - conda-forge
+dependencies:
+  - numpy
+  - pip
+  - typing-extensions
+  - gemmi
+  - rdkit
+  # tests
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  - coverage
+  - pooch
+  - openmm
+  # docs
+  - myst-parser
+  - pydata-sphinx-theme
