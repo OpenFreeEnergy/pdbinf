@@ -49,6 +49,7 @@ from rdkit.Chem import AllChem
 import logging
 import pathlib
 import numpy as np
+import os
 from typing import Iterator, Union
 
 logger = logging.getLogger(__name__)
@@ -165,7 +166,7 @@ def assign_intra_props(mol, atom_span: range, reference_block):
     return mol, valence
 
 
-def load_pdb_file(pdb_path: Union[str, pathlib.Path],
+def load_pdb_file(pdb_path: Union[str, os.PathLike],
                   templates: list[gemmi.cif.Document]) -> Chem.Mol:
     """Load a PDB File and assign bonds (with order)
 
@@ -175,7 +176,7 @@ def load_pdb_file(pdb_path: Union[str, pathlib.Path],
       path to the file to be loaded
     templates : list[gemmi.cif.Document]
     """
-    m = Chem.MolFromPDBFile(pdb_path,
+    m = Chem.MolFromPDBFile(str(pdb_path),  # rdkit doesn't like Path objects
                             flavor=1 & 8,
                             proximityBonding=False,
                             removeHs=False)
@@ -231,7 +232,7 @@ def gemmi_to_rdkit(block: gemmi.cif.Block):
     return m
 
 
-def load_pdbx_file(pdbx_path: Union[str, pathlib.Path],
+def load_pdbx_file(pdbx_path: Union[str, os.PathLike],
                    templates: list[gemmi.cif.Document]) -> Chem.Mol:
     """Load a pdbx file and assign bond information from templates
 
@@ -252,7 +253,7 @@ def load_pdbx_file(pdbx_path: Union[str, pathlib.Path],
       if there is more than one block in the file
     """
     # first load pdbx using gemmi
-    d = gemmi.cif.read_file(pdbx_path)
+    d = gemmi.cif.read_file(str(pdbx_path))
     block = d.sole_block()
 
     # transfer gemmi object into rdkit

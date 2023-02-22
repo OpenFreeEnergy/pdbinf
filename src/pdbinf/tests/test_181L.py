@@ -1,6 +1,6 @@
 # This code is part of pdbinf and is licensed under the MIT license.
 # For details, see https://github.com/OpenFreeEnergy/pdbinf
-from importlib import resources
+import pathlib
 import pdbinf
 import pooch
 import pytest
@@ -17,5 +17,12 @@ def pdb_181l():
 
 def test_read_181l(pdb_181l):
     m = pdbinf.load_pdb_file(pdb_181l, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m
+
+
+def test_read_181l_pathlib(pdb_181l):
+    p = pathlib.Path(pdb_181l)
+    m = pdbinf.load_pdb_file(p, templates=[pdbinf.STANDARD_AA_DOC])
 
     assert m
