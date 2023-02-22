@@ -1,6 +1,7 @@
 # This code is part of pdbinf and is licensed under the MIT license.
 # For details, see https://github.com/OpenFreeEnergy/pdbinf
 
+import pathlib
 import pdbinf
 import pytest
 
@@ -107,8 +108,17 @@ def ALA_ALA(tmpdir):
     return p
 
 
-def test_ALA_ALA(ALA_ALA):
+def test_load_pdbx(ALA_ALA):
     m = pdbinf.load_pdbx_file(ALA_ALA, templates=[pdbinf.STANDARD_AA_DOC])
+
+    assert m.GetNumAtoms() == 32
+    assert m.GetNumBonds() == 31
+
+
+def test_load_pdbx_pathlib(ALA_ALA):
+    p = pathlib.Path(ALA_ALA)
+
+    m = pdbinf.load_pdbx_file(p, templates=[pdbinf.STANDARD_AA_DOC])
 
     assert m.GetNumAtoms() == 32
     assert m.GetNumBonds() == 31
