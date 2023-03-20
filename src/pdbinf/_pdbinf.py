@@ -126,10 +126,11 @@ def assign_intra_props(mol, atom_span: range, reference_block):
     valence = np.zeros(mol.GetNumAtoms(), dtype=int)
 
     # grab bond data from gemmi Block
-    for nm1, nm2, arom, order in reference_block.find(
+    for row in reference_block.find(
             '_chem_comp_bond.',
             ['atom_id_1', 'atom_id_2', 'pdbx_aromatic_flag', 'value_order']
     ):
+        nm1, nm2, arom, order = row.str(0), row.str(1), row[2], row[3]
         try:
             idx1, idx2 = nm_2_idx[nm1], nm_2_idx[nm2]
         except KeyError:
