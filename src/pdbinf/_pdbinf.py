@@ -84,7 +84,7 @@ def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, str, str]]:
     """
     def reshash(atom):
         mi = atom.GetMonomerInfo()
-        resname = mi.GetResidueName()
+        resname = mi.GetResidueName().strip()
         resnum = mi.GetResidueNumber()
         icode = mi.GetInsertionCode()
         chain = mi.GetChainId()
@@ -457,7 +457,7 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
             valence += v
             break  # avoid double assignment, ordering of templates is relevant
         else:
-            raise ValueError(f"Failed to find template for resname: {resname}")
+            raise ValueError(f"Failed to find template for resname: '{resname}'")
 
     # 2) assign bonds between residues
     mol, v = assign_inter_residue_bonds(mol)
