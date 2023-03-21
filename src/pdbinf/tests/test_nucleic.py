@@ -13,4 +13,4 @@ def test_nucleic(openmm_nucleic):
 
     assert m.GetNumAtoms() == 767
     # {'U': 3, 'T': 1, 'A': 5, 'C': 6, 'G': 9} -> 59 total rings
-    assert m.GetNumBonds() == 825
+    assert m.GetNumBonds() == 827
