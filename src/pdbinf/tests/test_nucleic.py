@@ -6,16 +6,6 @@ More involved testing of dna/rna support
 """
 
 import pdbinf
-import pooch
-import pytest
-
-
-@pytest.fixture()
-def openmm_nucleic():
-    return pooch.retrieve(
-        url="https://github.com/openmm/openmm/raw/8.0.0/wrappers/python/tests/systems/nucleic.pdb",
-        known_hash="97eae94bffff1b8e524957477cd841f114ed58a99bbcdf8f518de31380892907",
-    )
 
 
 def test_nucleic(openmm_nucleic):
