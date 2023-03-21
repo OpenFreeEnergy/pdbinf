@@ -153,6 +153,40 @@ def assign_intra_props(mol, atom_span: range, reference_block):
 
     mol = em.GetMol()
 
+    # find lone hydrogens, then attach to the nearest heavy atom
+    additional_bonds = []
+    heavy_atoms = []
+    lone_H = []
+    for idx in atom_span:
+        atom = mol.GetAtomWithIdx(idx)
+        if atom.GetAtomicNum() != 1:
+            heavy_atoms.append(idx)
+            continue
+        if atom.GetBonds():  # if any bonds, we're ok
+            continue
+        lone_H.append(idx)
+    if lone_H:
+        logger.debug(f"found lone hydrogens: {lone_H}")
+        conf = mol.GetConformer()
+        for idx in lone_H:
+            pos = conf.GetAtomPosition(idx)
+            minidx, mindist = -1, float('inf')
+            for idx2 in heavy_atoms:
+                pos2 = conf.GetAtomPosition(idx2)
+                d = pos.Distance(pos2)
+                if d > mindist:
+                    continue
+                minidx, mindist = idx2, d
+
+            if mindist < MAX_AMIDE_LENGTH:
+                logger.debug(f"attached hydrogen {idx} to heavy atom {minidx} d={mindist}")
+                additional_bonds.append((idx, minidx))
+    if additional_bonds:
+        em = Chem.EditableMol(mol)
+        for i, j in additional_bonds:
+            em.AddBond(i, j, order=Chem.BondType.SINGLE)
+        mol = em.GetMol()
+
     for nm, arom in reference_block.find('_chem_comp_atom.',
                                          ['atom_id', 'pdbx_aromatic_flag']):
         try:
