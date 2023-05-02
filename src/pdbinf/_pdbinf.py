@@ -126,6 +126,9 @@ def assign_intra_props(mol, atom_span: range, reference_block):
     valence = np.zeros(mol.GetNumAtoms(), dtype=int)
 
     # grab bond data from gemmi Block
+    nm2element: dict[str, int] = {i: PT.GetAtomicNumber(j)
+                                  for i, j in reference_block.find('_chem_comp_atom.', ['atom_id', 'type_symbol'])}
+    missing_bonds = []
     for row in reference_block.find(
             '_chem_comp_bond.',
             ['atom_id_1', 'atom_id_2', 'pdbx_aromatic_flag', 'value_order']
@@ -134,6 +137,10 @@ def assign_intra_props(mol, atom_span: range, reference_block):
         try:
             idx1, idx2 = nm_2_idx[nm1], nm_2_idx[nm2]
         except KeyError:
+            logger.debug(f"missed bond: {nm1}-{nm2}")
+            e1, e2 = nm2element[nm1], nm2element[nm2]
+            if e1 != 1 and e2 != 1:
+                missing_bonds.append((nm1, nm2, arom, order))
             continue
 
         v = 1 if order == 'SING' else 2  # 'DOUB'
@@ -150,6 +157,50 @@ def assign_intra_props(mol, atom_span: range, reference_block):
         logger.debug(f"adding bond: {nm1}-{nm2} at {idx1} {idx2} {order}")
 
         em.AddBond(idx1, idx2, order=order)
+
+    mol = em.GetMol()
+
+    # try and figure out what the missing bonds might be
+    for nm1, nm2, arom, order in missing_bonds:
+        e1, e2 = nm2element[nm1], nm2element[nm2]
+
+        # find atoms that could be a match
+        t1, t2 = [], []
+        for i in atom_span:
+            atom = mol.GetAtomWithIdx(i)
+            if atom.GetAtomicNum() == e1:
+                t1.append(i)
+            if atom.GetAtomicNum() == e2:
+                t2.append(i)
+
+        conf = mol.GetConformer()
+        for x, y in itertools.product(t1, t2):
+            if mol.GetBondBetweenAtoms(x, y) is not None:  # if we already have a bond, don't try to add another
+                continue
+            if e1 == e2 and x >= y:  # avoid double adding same element bonds, e.g C-C will yield symmetric results
+                continue
+            # check if acceptable bond length
+            length = conf.GetAtomPosition(x).Distance(conf.GetAtomPosition(y))
+            if length < MAX_AMIDE_LENGTH:  # TODO: Improve assumed length
+                break
+        else:
+            logger.debug(f"couldn't find bond: {nm1}-{nm2}")
+            continue
+
+        v = 1 if order == 'SING' else 2  # 'DOUB'
+        valence[x] += v
+        valence[y] += v
+
+        if arom == 'Y':
+            order = Chem.BondType.AROMATIC
+        elif v == 1:
+            order = Chem.BondType.SINGLE
+        else:  # order == 'DOUB'
+            order = Chem.BondType.DOUBLE
+
+        logger.debug(f"adding assumed bond: {nm1}-{nm2} at {x} {y} {order}")
+
+        em.AddBond(x, y, order=order)
 
     mol = em.GetMol()
 
