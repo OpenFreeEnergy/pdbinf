@@ -128,8 +128,11 @@ def assign_intra_props(mol, atom_span: range, reference_block):
     valence = np.zeros(mol.GetNumAtoms(), dtype=int)
 
     # grab bond data from gemmi Block
-    nm2element: dict[str, int] = {i: PT.GetAtomicNumber(j)
-                                  for i, j in reference_block.find('_chem_comp_atom.', ['atom_id', 'type_symbol'])}
+    nm2element: dict[str, int] = {}
+    for row in reference_block.find('_chem_comp_atom.',
+                                    ['atom_id', 'type_symbol']):
+        nm2element[row.str(0)] = row.str(1)
+
     missing_bonds = []
     for row in reference_block.find(
             '_chem_comp_bond.',
