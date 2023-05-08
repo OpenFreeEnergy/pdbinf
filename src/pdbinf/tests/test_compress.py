@@ -148,29 +148,30 @@ data_TPO
 _chem_comp.id TPO
 loop_
 _chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
 _chem_comp_atom.pdbx_aromatic_flag
-N N
-CA N
-CB N
-CG2 N
-OG1 N
-P N
-O1P N
-O2P N
-O3P N
-C N
-O N
-OXT N
-H N
-H2 N
-HA N
-HB N
-HG21 N
-HG22 N
-HG23 N
-HOP2 N
-HOP3 N
-HXT N
+N N N
+CA C N
+CB C N
+CG2 C N
+OG1 O N
+P P N
+O1P O N
+O2P O N
+O3P O N
+C C N
+O O N
+OXT O N
+H H N
+H2 H N
+HA H N
+HB H N
+HG21 H N
+HG22 H N
+HG23 H N
+HOP2 H N
+HOP3 H N
+HXT H N
 #
 loop_
 _chem_comp_bond.atom_id_1
