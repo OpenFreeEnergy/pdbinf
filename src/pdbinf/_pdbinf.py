@@ -30,6 +30,8 @@ Currently the following PDBx fields are used and required:
 _chem_comp_atom
  - atom_id
    matches against rdkit atom MonomerInfo().GetName() property
+ - type_symbol
+   matches against the AtomicNumber() of each atom
  - pdbx_aromatic_flag
    used to set IsAromatic on rdkit Atoms
 

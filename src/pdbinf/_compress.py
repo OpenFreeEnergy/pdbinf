@@ -19,7 +19,7 @@ from typing import Generator, Iterable
 
 
 REQUIRED_ATOM_FIELDS = [
-    'atom_id', 'pdbx_aromatic_flag',
+    'atom_id', 'type_symbol', 'pdbx_aromatic_flag',
 ]
 REQUIRED_BOND_FIELDS = [
     'atom_id_1', 'atom_id_2', 'value_order', 'pdbx_aromatic_flag',
