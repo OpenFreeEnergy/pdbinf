@@ -8,43 +8,44 @@ data_DA
 _chem_comp.id DA
 loop_
 _chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
 _chem_comp_atom.pdbx_aromatic_flag
-OP3 N
-P N
-OP1 N
-OP2 N
-"O5'" N
-"C5'" N
-"C4'" N
-"O4'" N
-"C3'" N
-"O3'" N
-"C2'" N
-"C1'" N
-N9 Y
-C8 Y
-N7 Y
-C5 Y
-C6 Y
-N6 N
-N1 Y
-C2 Y
-N3 Y
-C4 Y
-HOP3 N
-HOP2 N
-"H5'" N
-"H5''" N
-"H4'" N
-"H3'" N
-"HO3'" N
-"H2'" N
-"H2''" N
-"H1'" N
-H8 N
-H61 N
-H62 N
-H2 N
+OP3 O N
+P P N
+OP1 O N
+OP2 O N
+"O5'" O N
+"C5'" C N
+"C4'" C N
+"O4'" O N
+"C3'" C N
+"O3'" O N
+"C2'" C N
+"C1'" C N
+N9 N Y
+C8 C Y
+N7 N Y
+C5 C Y
+C6 C Y
+N6 N N
+N1 N Y
+C2 C Y
+N3 N Y
+C4 C Y
+HOP3 H N
+HOP2 H N
+"H5'" H N
+"H5''" H N
+"H4'" H N
+"H3'" H N
+"HO3'" H N
+"H2'" H N
+"H2''" H N
+"H1'" H N
+H8 H N
+H61 H N
+H62 H N
+H2 H N
 #
 loop_
 _chem_comp_bond.atom_id_1
@@ -94,41 +95,42 @@ data_DC
 _chem_comp.id DC
 loop_
 _chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
 _chem_comp_atom.pdbx_aromatic_flag
-OP3 N
-P N
-OP1 N
-OP2 N
-"O5'" N
-"C5'" N
-"C4'" N
-"O4'" N
-"C3'" N
-"O3'" N
-"C2'" N
-"C1'" N
-N1 N
-C2 N
-O2 N
-N3 N
-C4 N
-N4 N
-C5 N
-C6 N
-HOP3 N
-HOP2 N
-"H5'" N
-"H5''" N
-"H4'" N
-"H3'" N
-"HO3'" N
-"H2'" N
-"H2''" N
-"H1'" N
-H41 N
-H42 N
-H5 N
-H6 N
+OP3 O N
+P P N
+OP1 O N
+OP2 O N
+"O5'" O N
+"C5'" C N
+"C4'" C N
+"O4'" O N
+"C3'" C N
+"O3'" O N
+"C2'" C N
+"C1'" C N
+N1 N N
+C2 C N
+O2 O N
+N3 N N
+C4 C N
+N4 N N
+C5 C N
+C6 C N
+HOP3 H N
+HOP2 H N
+"H5'" H N
+"H5''" H N
+"H4'" H N
+"H3'" H N
+"HO3'" H N
+"H2'" H N
+"H2''" H N
+"H1'" H N
+H41 H N
+H42 H N
+H5 H N
+H6 H N
 #
 loop_
 _chem_comp_bond.atom_id_1
@@ -175,44 +177,45 @@ data_DG
 _chem_comp.id DG
 loop_
 _chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
 _chem_comp_atom.pdbx_aromatic_flag
-OP3 N
-P N
-OP1 N
-OP2 N
-"O5'" N
-"C5'" N
-"C4'" N
-"O4'" N
-"C3'" N
-"O3'" N
-"C2'" N
-"C1'" N
-N9 Y
-C8 Y
-N7 Y
-C5 Y
-C6 N
-O6 N
-N1 N
-C2 N
-N2 N
-N3 N
-C4 Y
-HOP3 N
-HOP2 N
-"H5'" N
-"H5''" N
-"H4'" N
-"H3'" N
-"HO3'" N
-"H2'" N
-"H2''" N
-"H1'" N
-H8 N
-H1 N
-H21 N
-H22 N
+OP3 O N
+P P N
+OP1 O N
+OP2 O N
+"O5'" O N
+"C5'" C N
+"C4'" C N
+"O4'" O N
+"C3'" C N
+"O3'" O N
+"C2'" C N
+"C1'" C N
+N9 N Y
+C8 C Y
+N7 N Y
+C5 C Y
+C6 C N
+O6 O N
+N1 N N
+C2 C N
+N2 N N
+N3 N N
+C4 C Y
+HOP3 H N
+HOP2 H N
+"H5'" H N
+"H5''" H N
+"H4'" H N
+"H3'" H N
+"HO3'" H N
+"H2'" H N
+"H2''" H N
+"H1'" H N
+H8 H N
+H1 H N
+H21 H N
+H22 H N
 #
 loop_
 _chem_comp_bond.atom_id_1
@@ -263,43 +266,44 @@ data_DT
 _chem_comp.id DT
 loop_
 _chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
 _chem_comp_atom.pdbx_aromatic_flag
-OP3 N
-P N
-OP1 N
-OP2 N
-"O5'" N
-"C5'" N
-"C4'" N
-"O4'" N
-"C3'" N
-"O3'" N
-"C2'" N
-"C1'" N
-N1 N
-C2 N
-O2 N
-N3 N
-C4 N
-O4 N
-C5 N
-C7 N
-C6 N
-HOP3 N
-HOP2 N
-"H5'" N
-"H5''" N
-"H4'" N
-"H3'" N
-"HO3'" N
-"H2'" N
-"H2''" N
-"H1'" N
-H3 N
-H71 N
-H72 N
-H73 N
-H6 N
+OP3 O N
+P P N
+OP1 O N
+OP2 O N
+"O5'" O N
+"C5'" C N
+"C4'" C N
+"O4'" O N
+"C3'" C N
+"O3'" O N
+"C2'" C N
+"C1'" C N
+N1 N N
+C2 C N
+O2 O N
+N3 N N
+C4 C N
+O4 O N
+C5 C N
+C7 C N
+C6 C N
+HOP3 H N
+HOP2 H N
+"H5'" H N
+"H5''" H N
+"H4'" H N
+"H3'" H N
+"HO3'" H N
+"H2'" H N
+"H2''" H N
+"H1'" H N
+H3 H N
+H71 H N
+H72 H N
+H73 H N
+H6 H N
 #
 loop_
 _chem_comp_bond.atom_id_1
