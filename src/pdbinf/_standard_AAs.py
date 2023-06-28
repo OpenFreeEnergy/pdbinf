@@ -1281,9 +1281,9 @@ _chem_comp_atom.type_symbol
 _chem_comp_atom.pdbx_aromatic_flag
 _chem_comp_atom.pdbx_leaving_atom_flag
 _chem_comp_atom.pdbx_stereo_config
-O  O  N N N N
-H1 H1 N N N N
-H2 H2 N N N N
+O  O  O N N N
+H1 H1 H N N N
+H2 H2 H N N N
 #
 loop_
 _chem_comp_bond.atom_id_1
