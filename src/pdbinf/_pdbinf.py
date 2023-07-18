@@ -117,7 +117,7 @@ def assign_intra_props(mol, atom_span: range, reference_block):
         atom = mol.GetAtomWithIdx(idx)
         nm_2_idx[atom.GetMonomerInfo().GetName().strip()] = idx
 
-    logger.info(f'assigning intra props for {reference_block.name}')
+    logger.debug(f'assigning intra props for {reference_block.name}')
 
     em = AllChem.EditableMol(mol)
 
