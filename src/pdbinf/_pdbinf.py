@@ -372,15 +372,17 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
 
             d1 = conf.GetAtomPosition(C_A).Distance(conf.GetAtomPosition(N_B))
             d2 = conf.GetAtomPosition(N_A).Distance(conf.GetAtomPosition(C_B))
+            logger.debug(f"C-N distance {d1}")
+            logger.debug(f"N-C distance {d2}")
             if d1 < MAX_AMIDE_LENGTH:
-                logger.debug(f'accepting C-N distance {d1}')
+                logger.debug(f'accepting C-N between {C_A} {N_B}')
                 bonds.append((C_A, N_B))
             elif d2 < MAX_AMIDE_LENGTH:
-                logger.debug(f'accepting N-C distance {d2}')
+                logger.debug(f'accepting N-C between {N_A} {C_B}')
                 bonds.append((N_A, C_B))
             else:
-                raise ValueError("Failed to find inter residue bond between "
-                                 f"{res_A} and {res_B}")
+                logger.debug("Failed to find inter residue bond between "
+                             f"{res_A} and {res_B}, assuming chain break")
         else:
             # find nonstandard residue bond
             i, j, d = smallest_connection(mol, i_A, j_A, i_B, j_B, conf)
