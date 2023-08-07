@@ -342,7 +342,7 @@ def smallest_connection(mol, a, b, x, y, conf) -> tuple[int, int, float]:
     return *ret, mindist
 
 
-def assign_inter_residue_bonds(mol) -> Chem.Mol:
+def assign_inter_residue_bonds(mol):
     bonds = []
     conf = mol.GetConformer()
 
