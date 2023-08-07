@@ -42,6 +42,7 @@ _chem_comp_bond
    used to calculate the valence table, which is used for formal charge
 
 """
+from collections import namedtuple
 import itertools
 import gemmi
 from rdkit import Chem
@@ -62,6 +63,8 @@ STANDARD_RESNAMES = {
 MAX_AMIDE_LENGTH = 2.0
 MAX_DISULPHIDE_LENGTH = 2.5
 
+Residue = namedtuple('Residue', 'resname,resid,icode,chain')
+
 
 def strip_bonds(m: Chem.Mol) -> Chem.Mol:
     em = AllChem.EditableMol(m)
@@ -72,7 +75,7 @@ def strip_bonds(m: Chem.Mol) -> Chem.Mol:
     return em.GetMol()
 
 
-def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, str, str]]:
+def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, Residue]]:
     """a generator of spans demarking different residues
 
     defines a residue as being a tuple of (resname, resnum) from the MI
@@ -82,14 +85,14 @@ def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, str, str]]:
     generator of (int, int, resname, chainid) tuples
       indicating that the residue called *resname* is between the two ints
     """
-    def reshash(atom):
+    def reshash(atom) -> Residue:
         mi = atom.GetMonomerInfo()
         resname = mi.GetResidueName().strip()
         resnum = mi.GetResidueNumber()
         icode = mi.GetInsertionCode()
         chain = mi.GetChainId()
 
-        return resname, resnum, icode, chain
+        return Residue(resname, resnum, icode, chain)
 
     begin = 0
     current = reshash(m.GetAtomWithIdx(0))
@@ -98,12 +101,12 @@ def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, str, str]]:
         nxt = reshash(m.GetAtomWithIdx(i))
 
         if nxt != current:
-            yield begin, i, current[0], current[-1]
+            yield begin, i, current
 
             current = nxt
             begin = i
 
-    yield begin, m.GetNumAtoms(), current[0], current[-1]
+    yield begin, m.GetNumAtoms(), current
 
 
 def assign_intra_props(mol, atom_span: range, reference_block):
@@ -348,16 +351,20 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
     valence = np.zeros(mol.GetNumAtoms(), dtype=int)
 
     res_gen = residue_spans(mol)
-    i_A, j_A, resname_A, chainid_A = next(res_gen)
-    for i_B, j_B, resname_B, chainid_B in res_gen:
-        logger.debug(f'trying {resname_A}({i_A} {j_A}) {resname_B}({i_B} {j_B})')
-        if chainid_A != chainid_B:
-            logger.debug(f'skipping due to chain break (chain id {chainid_A} vs {chainid_B})')
+    res_A: Residue
+    res_B: Residue
+    i_A, j_A, res_A = next(res_gen)
+    for i_B, j_B, res_B in res_gen:
+        logger.debug(f'trying {res_A.resname}({i_A} {j_A}) '
+                     f'{res_B.resname}({i_B} {j_B})')
+        if res_A.chain != res_B.chain:
+            logger.debug('skipping due to chain break '
+                         f'(chain id {res_A.chain} vs {res_B.chain})')
             # new chain so skip adding bonds from this residue
-            i_A, j_A, resname_A, chainid_A = i_B, j_B, resname_B, chainid_B
+            i_A, j_A, res_A = i_B, j_B, res_B
             continue
 
-        if resname_A in STANDARD_RESNAMES and resname_B in STANDARD_RESNAMES:
+        if res_A.resname in STANDARD_RESNAMES and res_B.resname in STANDARD_RESNAMES:
             N_A = get_atom_named(mol, i_A, j_A, 'N')
             C_A = get_atom_named(mol, i_A, j_A, 'C')
             N_B = get_atom_named(mol, i_B, j_B, 'N')
@@ -372,7 +379,8 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
                 logger.debug(f'accepting N-C distance {d2}')
                 bonds.append((N_A, C_B))
             else:
-                raise ValueError("Failed to find inter residue bond")
+                raise ValueError("Failed to find inter residue bond between "
+                                 f"{res_A} and {res_B}")
         else:
             # find nonstandard residue bond
             i, j, d = smallest_connection(mol, i_A, j_A, i_B, j_B, conf)
@@ -380,7 +388,7 @@ def assign_inter_residue_bonds(mol) -> Chem.Mol:
                 logger.debug(f'accepting nonstandard bond {i}-{j} {d}')
                 bonds.append((i, j))
 
-        i_A, j_A, resname_A, chainid_A = i_B, j_B, resname_B, chainid_B
+        i_A, j_A, res_A = i_B, j_B, res_B
 
     logger.debug(f'found {len(bonds)} bonds')
 
@@ -476,10 +484,11 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
 
     # 1) assign properties inside each Residue
     valence = np.zeros(mol.GetNumAtoms(), dtype=int)
-    for i, j, resname, _ in residue_spans(mol):
+    for i, j, res in residue_spans(mol):
+        resname = res.resname
         # for ions, we can let this slide
         if (j - i) == 1:
-            logger.debug(f"Skipping presumed ion called: {resname}")
+            logger.debug(f"Skipping presumed ion called: {res.resname}")
             continue
         elif resname == 'HIS':
             resname = histidine_check(mol, i, j)
@@ -492,7 +501,7 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
             valence += v
             break  # avoid double assignment, ordering of templates is relevant
         else:
-            raise ValueError(f"Failed to find template for resname: '{resname}'")
+            raise ValueError(f"Failed to find template for residue: '{res}'")
 
     # 2) assign bonds between residues
     mol, v = assign_inter_residue_bonds(mol)
