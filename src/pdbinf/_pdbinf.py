@@ -53,6 +53,8 @@ import numpy as np
 import os
 from typing import Iterator, Union
 
+from . import RESNAME_ALIASES, ATOMNAME_ALIASES
+
 logger = logging.getLogger(__name__)
 
 PT = Chem.GetPeriodicTable()
@@ -116,9 +118,12 @@ def assign_intra_props(mol, atom_span: range, reference_block):
     nm_2_idx = dict()
 
     # convert indices to names
+    aliases = ATOMNAME_ALIASES.get(reference_block.name, {})
     for idx in atom_span:
         atom = mol.GetAtomWithIdx(idx)
-        nm_2_idx[atom.GetMonomerInfo().GetName().strip()] = idx
+        nm = atom.GetMonomerInfo().GetName().strip()
+        nm = aliases.get(nm, nm)
+        nm_2_idx[nm] = idx
 
     logger.debug(f'assigning intra props for {reference_block.name}')
 
@@ -310,9 +315,12 @@ def doc_contains(d: gemmi.cif.Document, label: str) -> bool:
         return True
 
 
-def get_atom_named(mol, i, j, name) -> int:
+def get_atom_named(mol, i, j, resname, atomname) -> int:
+    aliases = ATOMNAME_ALIASES[resname]
+
     for x in range(i, j):
-        if mol.GetAtomWithIdx(x).GetMonomerInfo().GetName().strip() == name:
+        nm = mol.GetAtomWithIdx(x).GetMonomerInfo().GetName().strip()
+        if aliases.get(nm, nm) == atomname:
             return x
     else:
         raise ValueError
@@ -364,11 +372,13 @@ def assign_inter_residue_bonds(mol):
             i_A, j_A, res_A = i_B, j_B, res_B
             continue
 
-        if res_A.resname in STANDARD_RESNAMES and res_B.resname in STANDARD_RESNAMES:
-            N_A = get_atom_named(mol, i_A, j_A, 'N')
-            C_A = get_atom_named(mol, i_A, j_A, 'C')
-            N_B = get_atom_named(mol, i_B, j_B, 'N')
-            C_B = get_atom_named(mol, i_B, j_B, 'C')
+        canonical_resname_A = RESNAME_ALIASES.get(res_A.resname, res_A.resname)
+        canonical_resname_B = RESNAME_ALIASES.get(res_B.resname, res_B.resname)
+        if canonical_resname_A in STANDARD_RESNAMES and canonical_resname_B in STANDARD_RESNAMES:
+            N_A = get_atom_named(mol, i_A, j_A, canonical_resname_A, 'N')
+            C_A = get_atom_named(mol, i_A, j_A, canonical_resname_A, 'C')
+            N_B = get_atom_named(mol, i_B, j_B, canonical_resname_B, 'N')
+            C_B = get_atom_named(mol, i_B, j_B, canonical_resname_B, 'C')
 
             d1 = conf.GetAtomPosition(C_A).Distance(conf.GetAtomPosition(N_B))
             d2 = conf.GetAtomPosition(N_A).Distance(conf.GetAtomPosition(C_B))
@@ -487,10 +497,10 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
     # 1) assign properties inside each Residue
     valence = np.zeros(mol.GetNumAtoms(), dtype=int)
     for i, j, res in residue_spans(mol):
-        resname = res.resname
+        resname = RESNAME_ALIASES.get(res.resname, res.resname)
         # for ions, we can let this slide
         if (j - i) == 1:
-            logger.debug(f"Skipping presumed ion called: {res.resname}")
+            logger.debug(f"Skipping presumed ion: {res}")
             continue
         elif resname == 'HIS':
             resname = histidine_check(mol, i, j)
