@@ -5,6 +5,7 @@ import logging
 from ._standard_AAs import STANDARD_AA_DOC
 from ._rna_bases import RNA_DOC
 from ._dna_bases import DNA_DOC
+from ._aliases import RESNAME_ALIASES, ATOMNAME_ALIASES
 from ._compress import slimdown_cif
 from . import _pdbinf
 from ._pdbinf import (
