@@ -12,5 +12,6 @@ from ._pdbinf import (
     assign_pdb_bonds,
     load_pdb_file, load_pdbx_file,
 )
+from . import guessing
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
