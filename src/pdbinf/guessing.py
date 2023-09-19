@@ -126,7 +126,9 @@ def block_to_molhash(block: gemmi.cif.Block):
 
 def guess_residue_name(mol: Chem.Mol, templates: list[gemmi.cif.Block]) -> str:
     """Guess the Residue name for *mol* from within *templates*"""
-    target = rdMolHash.MolHash(mol, rdMolHash.HashFunction.ElementGraph)
+    target_mol = Chem.RemoveAllHs(mol, sanitize=False)
+    Chem.RemoveStereochemistry(target_mol)
+    target = rdMolHash.MolHash(target_mol, rdMolHash.HashFunction.ElementGraph)
 
     for t in templates:
         for h in block_to_molhash(t):
