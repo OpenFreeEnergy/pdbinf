@@ -5,8 +5,9 @@
 Tools for guessing residue and atom names from malformed inputs.
 """
 import gemmi
+import itertools
 from rdkit import Chem
-from rdkit.Chem import rdMolHash
+from rdkit.Chem import rdMolHash, rdmolops
 
 
 PT = Chem.GetPeriodicTable()
@@ -84,11 +85,43 @@ def block_to_mol(block: gemmi.cif.Block) -> Chem.Mol:
     return m
 
 
-def block_to_molhash(block: gemmi.cif.Block) -> str:
-    """Convert a block to its element graph hash"""
+def block_to_molhash(block: gemmi.cif.Block):
+    """Convert a block to its possible element graph hashes
+
+    Multiple possible hashes are returned based on the combination of possible leaving atoms
+    """
     m = block_to_mol(block)
 
-    return rdMolHash.MolHash(rdMolHash.HashFunction.ElementGraph)
+    # find all leaving atoms
+    heavy_count = 0
+    leaving_atoms = []
+    for elem, leave in block.find('_chem_comp_atom.', ['type_symbol', 'pdbx_leaving_atom_flag']):
+        if elem == 'H':
+            continue
+
+        if leave == 'Y':
+            leaving_atoms.append(heavy_count)
+        heavy_count += 1
+
+    static_atoms = [i for i, atom in enumerate(m.GetAtoms())
+                    if i not in leaving_atoms]
+
+    # iterate over combinations of leaving atoms true/false
+    for includeX in itertools.product((True, False), repeat=len(leaving_atoms)):
+        this_mol_ix = static_atoms.copy()
+        for keep, ix in zip(includeX, leaving_atoms):
+            if keep:
+                this_mol_ix.append(ix)
+        this_mol_ix.sort()
+
+        this_mol = copy_mol_subset(m, this_mol_ix)
+
+        # only include whole molecule representations
+        # i.e. maybe a leaving atom fragmented the molecule
+        if len(rdmolops.GetMolFrags(this_mol)) > 2:
+            continue
+
+        yield rdMolHash.MolHash(this_mol, rdMolHash.HashFunction.ElementGraph)
 
 
 def guess_residue_name(mol: Chem.Mol, templates: list[gemmi.cif.Block]) -> str:
@@ -96,10 +129,9 @@ def guess_residue_name(mol: Chem.Mol, templates: list[gemmi.cif.Block]) -> str:
     target = rdMolHash.MolHash(mol, rdMolHash.HashFunction.ElementGraph)
 
     for t in templates:
-        h = block_to_molhash(t)
-
-        if h == target:
-            return t.name
+        for h in block_to_molhash(t):
+            if h == target:
+                return t.name
     else:
         raise ValueError
 
