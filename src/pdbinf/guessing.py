@@ -4,6 +4,7 @@
 
 Tools for guessing residue and atom names from malformed inputs.
 """
+from collections import defaultdict, deque
 import gemmi
 import itertools
 from rdkit import Chem
@@ -202,9 +203,37 @@ def guess_atom_names(mol: Chem.Mol, template: gemmi.cif.Block) -> list[str]:
         if not m:
             raise ValueError
 
+        # mapping of heavy atom names to molecule indices
         names = [r.str(0) for r in template.find('_chem_comp_atom.', ['atom_id'])]
-
         # rearrange to match input order and return
-        return [names[i] for i in m]
+        heavy_atom_names = [names[i] for i in m]
+        idx_to_name = {i: n for i, n in zip(m, heavy_atom_names)}
+
+        # first identify hydrogen names
+        hydrogen_names = {nm for elem, nm in template.find('_chem_comp_atom.', ['type_symbol', 'atom_id'])
+                          if elem == 'H'}
+        # create list of hydrogens per heavy atom
+        hydrogens_per_heavy = defaultdict(deque)
+        for i, j in template.find('_chem_comp_bond.', ['atom_id_1', 'atom_id_2']):
+            if i in hydrogen_names:
+                hydrogens_per_heavy[j].append(i)
+            elif j in hydrogen_names:
+                hydrogens_per_heavy[i].append(j)
+
+        output_names = []
+        for atom in mol.GetAtoms():
+            try:
+                nm = idx_to_name[atom.GetIdx()]
+            except KeyError:
+                # figure out which heavy atom we're attached to
+                hvy_idx = atom.GetBonds()[0].GetOtherAtomIdx(atom.GetIdx())
+                hvy_nm = idx_to_name[hvy_idx]
+
+                # grab the next hydrogen name off that heavy atom
+                nm = hydrogens_per_heavy[hvy_nm].popleft()
+
+            output_names.append(nm)
+
+        return output_names
     else:
         raise ValueError("Failed to find correct subset of atoms to match template to mol")
