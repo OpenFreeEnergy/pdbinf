@@ -12,6 +12,40 @@ from rdkit.Chem import rdMolHash
 PT = Chem.GetPeriodicTable()
 
 
+def copy_mol_subset(mol: Chem.Mol, idx: list[int]) -> Chem.Mol:
+    """Extract a copy of a subset of a larger molecule"""
+    sub = Chem.Mol()
+    em = Chem.EditableMol(sub)
+
+    old2new = dict()
+
+    bonds = []
+
+    for i, index in enumerate(idx):
+        old2new[index] = i
+
+        src = mol.GetAtomWithIdx(index)
+
+        em.AddAtom(src)
+
+        for b in src.GetBonds():
+            other = b.GetOtherAtomIdx(index)
+
+            if other < index:
+                continue
+            if other not in idx:
+                continue
+
+            bonds.append((index, other, b.GetBondType()))
+
+    for i, j, o in bonds:
+        i2, j2 = old2new[i], old2new[j]
+
+        em.AddBond(i2, j2, o)
+
+    return em.GetMol()
+
+
 def block_to_mol(block: gemmi.cif.Block) -> Chem.Mol:
     """Convert a gemmi template Block into an rdkit Mol"""
     id_2_index = dict()
