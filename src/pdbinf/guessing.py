@@ -85,10 +85,10 @@ def block_to_mol(block: gemmi.cif.Block) -> Chem.Mol:
     return m
 
 
-def block_to_molhash(block: gemmi.cif.Block):
-    """Convert a block to its possible element graph hashes
+def block_to_ix(block):
+    """Generator of possible heavy atom indices representing combinations of leaving atoms
 
-    Multiple possible hashes are returned based on the combination of possible leaving atoms
+    Multiple molecules are returned representing different combinations of leaving molecules
     """
     m = block_to_mol(block)
 
@@ -114,39 +114,52 @@ def block_to_molhash(block: gemmi.cif.Block):
                 this_mol_ix.append(ix)
         this_mol_ix.sort()
 
-        this_mol = copy_mol_subset(m, this_mol_ix)
+        yield this_mol_ix
 
-        # only include whole molecule representations
-        # i.e. maybe a leaving atom fragmented the molecule
-        if len(rdmolops.GetMolFrags(this_mol)) > 2:
-            continue
 
-        yield rdMolHash.MolHash(this_mol, rdMolHash.HashFunction.ElementGraph)
+def block_to_molhash(block: gemmi.cif.Block):
+    """Convert a block to its possible element graph hashes
+
+    Multiple possible hashes are returned based on the combination of possible leaving atoms
+    """
+    whole_mol = block_to_mol(block)
+    for ix in block_to_ix(block):
+        mol = copy_mol_subset(whole_mol, ix)
+
+        yield rdMolHash.MolHash(mol, rdMolHash.HashFunction.ElementGraph)
+
+
+def normalised_hash(mol: Chem.Mol):
+    target_mol = Chem.RemoveAllHs(mol, sanitize=False)
+    Chem.RemoveStereochemistry(target_mol)
+    return rdMolHash.MolHash(target_mol, rdMolHash.HashFunction.ElementGraph)
 
 
 def guess_residue_name(mol: Chem.Mol, templates: list[gemmi.cif.Block]) -> str:
     """Guess the Residue name for *mol* from within *templates*"""
-    target_mol = Chem.RemoveAllHs(mol, sanitize=False)
-    Chem.RemoveStereochemistry(target_mol)
-    target = rdMolHash.MolHash(target_mol, rdMolHash.HashFunction.ElementGraph)
+    target = normalised_hash(mol)
 
     for t in templates:
         for h in block_to_molhash(t):
             if h == target:
                 return t.name
     else:
-        raise ValueError
+        raise ValueError("Could not match any template against mol")
 
 
-def block_to_query(block: gemmi.cif.Block) -> Chem.Mol:
+def block_to_query(block: gemmi.cif.Block, ix: list[int]) -> Chem.Mol:
     """Generate a query molecule from a gemmi Block"""
     id_2_index = dict()
 
     pieces = []
 
+    heavy_atom_count = 0
     for i, (elem, atomid) in enumerate(block.find('_chem_comp_atom.',
                                                   ['type_symbol', 'atom_id'])):
         if elem == 'H':
+            continue
+        heavy_atom_count += 1
+        if (heavy_atom_count - 1) not in ix:
             continue
 
         id_2_index[atomid] = i
@@ -172,14 +185,26 @@ def block_to_query(block: gemmi.cif.Block) -> Chem.Mol:
 
 def guess_atom_names(mol: Chem.Mol, template: gemmi.cif.Block) -> list[str]:
     """Get the canonical atom names for *mol* based on *template*"""
-    q = block_to_query(template)
+    target = normalised_hash(mol)
+    whole_block_mol = block_to_mol(template)
 
-    m = mol.GetSubstructMatch(q)
+    for ix in block_to_ix(template):
+        # find appropriate template among possible leaving atoms
+        subset_block_mol = copy_mol_subset(whole_block_mol, ix)
 
-    if not m:
-        raise ValueError
+        if rdMolHash.MolHash(subset_block_mol, rdMolHash.HashFunction.ElementGraph) != target:
+            continue
 
-    names = [r.str(0) for r in template.find('_chem_comp_atom.', ['atom_id'])]
+        q = block_to_query(template, ix)
 
-    # rearrange to match input order and return
-    return [names[i] for i in m]
+        m = mol.GetSubstructMatch(q)
+
+        if not m:
+            raise ValueError
+
+        names = [r.str(0) for r in template.find('_chem_comp_atom.', ['atom_id'])]
+
+        # rearrange to match input order and return
+        return [names[i] for i in m]
+    else:
+        raise ValueError("Failed to find correct subset of atoms to match template to mol")
