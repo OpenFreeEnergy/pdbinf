@@ -9,6 +9,7 @@ import gemmi
 import itertools
 from rdkit import Chem
 from rdkit.Chem import rdMolHash, rdmolops
+from typing import Optional
 
 
 PT = Chem.GetPeriodicTable()
@@ -136,8 +137,11 @@ def normalised_hash(mol: Chem.Mol):
     return rdMolHash.MolHash(target_mol, rdMolHash.HashFunction.ElementGraph)
 
 
-def guess_residue_name(mol: Chem.Mol, templates: list[gemmi.cif.Block]) -> str:
+def guess_residue_name(mol: Chem.Mol, templates: list[gemmi.cif.Block],
+                       subset: Optional[list[int]] = None) -> str:
     """Guess the Residue name for *mol* from within *templates*"""
+    if subset is not None:
+        mol = copy_mol_subset(mol, subset)
     target = normalised_hash(mol)
 
     for t in templates:
@@ -184,8 +188,26 @@ def block_to_query(block: gemmi.cif.Block, ix: list[int]) -> Chem.Mol:
     return m
 
 
-def guess_atom_names(mol: Chem.Mol, template: gemmi.cif.Block) -> list[str]:
-    """Get the canonical atom names for *mol* based on *template*"""
+def guess_atom_names(mol: Chem.Mol, template: gemmi.cif.Block,
+                     subset: Optional[list[int]]) -> list[str]:
+    """Get the canonical atom names for *mol* based on *template*
+
+    Parameters
+    ----------
+    mol : Chem.Mol
+      target molecule to guess atom names for, use subset to specify a subsection of this mol
+    template : gemmi.cif.Block
+      template to extract atom names from
+    subset : optional list[int]
+      atom indices that indicate a single monomer to guess for
+
+    Returns
+    -------
+    names : list[str]
+      the atom names for each atom
+    """
+    if subset is not None:
+        mol = copy_mol_subset(mol, subset)
     target = normalised_hash(mol)
     whole_block_mol = block_to_mol(template)
 
