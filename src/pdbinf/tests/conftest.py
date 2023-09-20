@@ -191,3 +191,8 @@ PDBS = pooch.create(
                         'eg5', 'hif2a'])
 def plb_proteins(request):
     return PDBS.fetch('{}/01_protein/crd/protein.pdb'.format(request.param))
+
+
+@pytest.fixture
+def cdk2_pdb():
+    return PDBS.fetch('cdk2/01_protein/crd/protein.pdb')
