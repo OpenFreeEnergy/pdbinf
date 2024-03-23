@@ -73,8 +73,11 @@ def strip_bonds(m: Chem.Mol) -> Chem.Mol:
 
     for b in m.GetBonds():
         em.RemoveBond(b.GetBeginAtomIdx(), b.GetEndAtomIdx())
-
-    return em.GetMol()
+    # rdkit, perhaps rightfully, gets upset at chiral tags w/ no bonds
+    m = em.GetMol()
+    for at in m.GetAtoms():
+        at.SetChiralTag(Chem.CHI_UNSPECIFIED)
+    return m
 
 
 def residue_spans(m: Chem.Mol) -> Iterator[tuple[int, int, Residue]]:
@@ -490,7 +493,7 @@ def assign_pdb_bonds(mol: Chem.Mol, templates: list[gemmi.cif.Document]) -> Chem
 
     Note
     ----
-    Any bonds on the input molecule will be removed at the start of the process
+    Any bonds and chiral designation on the input molecule will be removed at the start of the process
     """
     mol = strip_bonds(mol)
 

@@ -15,7 +15,7 @@ from typing import Optional
 PT = Chem.GetPeriodicTable()
 
 
-def copy_mol_subset(mol: Chem.Mol, idx: list[int]) -> Chem.Mol:
+def copy_mol_subset(mol: Chem.Mol, idx: list[int], with_conformer=False) -> Chem.Mol:
     """Extract a copy of a subset of a larger molecule"""
     sub = Chem.Mol()
     em = Chem.EditableMol(sub)
@@ -46,7 +46,17 @@ def copy_mol_subset(mol: Chem.Mol, idx: list[int]) -> Chem.Mol:
 
         em.AddBond(i2, j2, o)
 
-    return em.GetMol()
+    m = em.GetMol()
+
+    if with_conformer:
+        old_c = mol.GetConformer()
+        new_c = Chem.Conformer()
+        for index in idx:
+            new_c.SetAtomPosition(new_c.GetNumAtoms(), old_c.GetAtomPosition(index))
+
+        m.AddConformer(new_c)
+
+    return m
 
 
 def block_to_mol(block: gemmi.cif.Block) -> Chem.Mol:
@@ -56,15 +66,19 @@ def block_to_mol(block: gemmi.cif.Block) -> Chem.Mol:
     m = Chem.Mol()
     em = Chem.EditableMol(m)
 
-    for i, (elem, atomid) in enumerate(block.find('_chem_comp_atom.',
-                                                  ['type_symbol', 'atom_id'])):
+    # we don't add all atoms, and EditableMol doesn't have GetNumAtoms() like ability,
+    # so keep manual counter for backwards lookup dict
+    natoms = 0
+    for elem, atomid in block.find('_chem_comp_atom.',
+                                   ['type_symbol', 'atom_id']):
         if elem == 'H':
             continue
 
-        id_2_index[atomid] = i
-
-        a = Chem.Atom(PT.GetAtomicNumber(elem))
+        a = Chem.Atom(PT.GetAtomicNumber(elem.capitalize()))
         em.AddAtom(a)
+        # reverse lookup dict to make atom id (i.e. name) to index (index within rdkit Mol)
+        id_2_index[atomid] = natoms
+        natoms += 1
 
     for id1, id2, o, arom in block.find('_chem_comp_bond.',
                                         ['atom_id_1', 'atom_id_2',
@@ -78,12 +92,14 @@ def block_to_mol(block: gemmi.cif.Block) -> Chem.Mol:
             rdko = Chem.BondType.AROMATIC
         else:
             rdko = {'SING': Chem.BondType.SINGLE,
-                    'DOUB': Chem.BondType.DOUBLE}[o]
+                    'DOUB': Chem.BondType.DOUBLE,
+                    'TRIP': Chem.BondType.TRIPLE}[o]
 
         em.AddBond(index1, index2, order=rdko)
 
     m = em.GetMol()
-    m.UpdatePropertyCache()
+    m.UpdatePropertyCache(strict=False)
+
     return m
 
 
